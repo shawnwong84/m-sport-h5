@@ -9,6 +9,10 @@
 		/>
 		<link rel="icon" href="<%= BASE_URL %>favicon.ico" />
 		<title><%= htmlWebpackPlugin.options.title %></title>
+		<link
+			rel="stylesheet"
+			href="https://g.alicdn.com/de/prismplayer/2.9.3/skins/default/aliplayer-min.css"
+		/>
 	</head>
 	<body>
 		<noscript>
@@ -21,4 +25,62 @@
 		<div id="app"></div>
 		<!-- built files will be auto injected -->
 	</body>
+	<script>
+		function isPcFun() {
+			let u = navigator.userAgent;
+			let Agents = [
+				'Android',
+				'iPhone',
+				'webOS',
+				'BlackBerry',
+				'SymbianOS',
+				'Windows Phone',
+				'iPad',
+				'iPod',
+			];
+			let flag = true;
+			for (let i = 0; i < Agents.length; i++) {
+				if (u.indexOf(Agents[i]) > 0) {
+					flag = false;
+					break;
+				}
+			}
+			return flag;
+		}
+		var isPc = isPcFun();
+		if (isPc) {
+			window.location.href = 'http://' + window.location.host + '/#/home';
+		}
+		document.documentElement.addEventListener(
+			'touchstart',
+			function (event) {
+				if (event.touches.length > 1) {
+					event.preventDefault();
+				}
+			},
+			false,
+		);
+		var lastTouchEnd = 0;
+		document.documentElement.addEventListener(
+			'touchend',
+			function (event) {
+				var now = Date.now();
+				if (now - lastTouchEnd <= 300) {
+					event.preventDefault();
+				}
+				lastTouchEnd = now;
+			},
+			false,
+		);
+		document.body.addEventListener(
+			'touchmove',
+			self.welcomeShowedListener,
+			false,
+		);
+	</script>
+	<script
+		type="text/javascript"
+		charset="utf-8"
+		src="https://g.alicdn.com/de/prismplayer/2.9.3/aliplayer-min.js"
+	></script>
 </html>

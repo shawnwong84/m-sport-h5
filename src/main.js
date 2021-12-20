@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import router from './router';
-import Store from './vuex';
+import Store from './store';
 import App from './App';
 import './assets/css/base.css';
 import './assets/css/content.css';
 import './assets/css/swiper.min.css';
-import './assets/scss/global.scss'
+import './assets/scss/global.scss';
 
 import 'babel-polyfill';
 import ax from './api/index';
