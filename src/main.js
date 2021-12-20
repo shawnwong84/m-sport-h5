@@ -4,17 +4,18 @@ import Store from './store';
 import App from './App';
 import './assets/css/base.css';
 import './assets/css/content.css';
-import './assets/css/swiper.min.css';
 import './assets/scss/global.scss';
+import 'swiper/css/swiper.min.css'
 
 import 'babel-polyfill';
 import ax from './api/index';
 import Utils from './assets/js/utils.js';
 import { Toast, DatetimePicker, Popup, Picker, Range } from 'mint-ui';
-// import Des from './assets/js/des.js'
-import Vuetify from 'vuetify';
+import moment from 'moment'
+   
+  
 import VueLazyload from 'vue-lazyload';
-import 'vuetify/dist/vuetify.min.css';
+
 import webimconfig from './utils/webim.config.js';
 import websdk from 'easemob-websdk';
 // 环信
@@ -57,7 +58,8 @@ Vue.component(Range.name, Range);
 Vue.prototype.$WebIM = WebIM;
 Vue.prototype.$imconn = conn;
 Vue.prototype.$imoption = optionsIm;
-Vue.use(Vuetify);
+Vue.prototype.$moment = moment;
+
 Vue.use(websdk);
 // Vue.use(Timeline)
 // Vue.use(TimelineItem)
