@@ -37,30 +37,71 @@
                                 <span class="time">{{ item.matchTime }}</span>
                             </div>
                         </div>
-                        <div></div>
+                        <div class="match-team">
+                            <div class="team-info">
+                                <div class="team-name">
+                                    <img :src="item.homeTeam.teamIcon" alt="" />
+                                    <span> {{ item.homeTeam.teamName }}</span>
+                                </div>
+                                <div class="team-name">
+                                    <img :src="item.awayTeam.teamIcon" alt="" />
+                                    <span> {{ item.awayTeam.teamName }}</span>
+                                </div>
+                            </div>
+                            <div
+                                class="subscribe"
+                                :class="{ already: item.subscribe }"
+                                @click="getAppoinment(item)"
+                            >
+                                {{ item.subscribe ? '已预约' : '预约' }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="all-match" @click="toPage('/match')">
+                <img src="../../../assets/image/home/date-icon.png" alt="" />
+                <span>全部赛程</span>
+            </div>
+        </div>
+        <div class="notice-box">
+            <span class="title">公告</span>
+        </div>
+        <div class="match-common-box">
+            <h2 class="title">正在热播</h2>
+            <div class="match-list">
+                <matchItem
+                    v-for="item in hotList"
+                    :key="item.roomId"
+                    :item="item"
+                ></matchItem>
+            </div>
+            <div class="check-more">查看更多</div>
         </div>
     </div>
 </template>
 
 <script>
 import Swiper from 'swiper';
-
+import { Cookie } from '../../../api/cookie';
+import matchItem from '../../../components/matchItem';
 export default {
     name: 'recommend',
     data() {
         return {
             bannerList: [],
             hotMatchList: [],
+            hotList: [],
         };
     },
-    components: {},
+    components: {
+        matchItem,
+    },
     watch: {},
     mounted() {
         this.getBannerList();
         this.getMatch();
+        this.getHotList();
     },
     methods: {
         getBannerList() {
@@ -108,7 +149,49 @@ export default {
                 }
             });
         },
-        matchTime(val) {},
+        getHotList() {
+            let param = {
+                pageNum: 1,
+                pageSize: 30,
+            };
+            this.$axios('post', '/live/getHotLiveList', param).then((res) => {
+                if (res.code === 200) {
+                    this.hotList = res.data.dataList.splice(0, 6);
+                }
+            });
+        },
+        // 用户预约
+        getAppoinment(item) {
+            if (Cookie.get('token')) {
+                let param = {
+                    id: item.id,
+                };
+                if (item.subscribe) {
+                    this.$axios(
+                        'post',
+                        '/match/userCancelReserveMatch',
+                        param,
+                    ).then((res) => {
+                        if (res.code === 200) {
+                            this.getMatch();
+                        }
+                    });
+                } else {
+                    this.$axios('post', '/match/userReserveMatch', param).then(
+                        (res) => {
+                            if (res.code === 200) {
+                                this.getMatch();
+                            }
+                        },
+                    );
+                }
+            } else {
+                this.$router.push('/login');
+            }
+        },
+        toPage(path) {
+            this.$router.push(path);
+        },
     },
 };
 </script>
@@ -116,7 +199,7 @@ export default {
 <style scoped lang="scss">
 .recommend-box {
     width: 100%;
-    padding: 16px;
+    padding: 16px 16px 70px;
     .banner-swiper-list {
         width: 100%;
         height: 136px;
@@ -145,6 +228,8 @@ export default {
         width: 100%;
         height: 96px;
         margin: 12px 0;
+        padding-right: 38px;
+        position: relative;
         .match-container {
             width: 100%;
             height: 100%;
@@ -174,7 +259,102 @@ export default {
                         }
                     }
                 }
+                .match-team {
+                    width: 100%;
+                    @include flexBetweenCenter();
+                    padding: 0 8px;
+                    .team-info {
+                        @include flexColumnCenter();
+
+                        .team-name {
+                            @include flexStartCenter();
+                            width: 90px;
+                            margin: 2px 0;
+                            img {
+                                width: 20px;
+                                height: auto;
+                                margin-right: 5px;
+                            }
+                            span {
+                                font-size: 12px;
+                                color: #282828;
+                                display: inline-block;
+                                width: 80px;
+                                @include textEllipsis();
+                            }
+                        }
+                    }
+                    .subscribe {
+                        width: 39px;
+                        height: 20px;
+                        background: #f8413d;
+                        border-radius: 2px;
+                        font-size: 12px;
+                        color: #fff;
+                        @include flexCenter();
+                        &.already {
+                            color: #f8413d;
+                            background: #ffe3e2;
+                        }
+                    }
+                }
             }
+        }
+        .all-match {
+            width: 33px;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 4px;
+            @include flexColumnCenter();
+            position: absolute;
+            top: 0;
+            right: 0;
+            img {
+                width: 12px;
+                height: 12px;
+                margin-bottom: 4px;
+            }
+            span {
+                writing-mode: vertical-lr;
+                font-size: 12px;
+
+                color: #605656;
+            }
+        }
+    }
+    .notice-box {
+        width: 100%;
+        height: 38px;
+        background: #ffffff;
+        border-radius: 4px;
+        @include flexStartCenter();
+        margin-bottom: 12px;
+        .title {
+            font-size: 12px;
+            color: $primary-color;
+        }
+    }
+    .match-common-box {
+        width: 100%;
+        margin-bottom: 12px;
+        .title {
+            font-size: 16px;
+            color: #282828;
+            margin-bottom: 12px;
+        }
+        .match-list {
+            width: 100%;
+            @include flexBetweenCenterWrap();
+        }
+        .check-more {
+            width: 343px;
+            height: 38px;
+            background: #ffffff;
+            border-radius: 4px;
+            color: #666666;
+            font-size: 12px;
+            margin-top: 12px;
+            @include flexCenter();
         }
     }
 }

@@ -29,15 +29,15 @@ export default {
                 },
                 {
                     id: 2,
-                    name: '足球',
+                    name: '全部',
                 },
                 {
                     id: 3,
-                    name: '篮球',
+                    name: '足球',
                 },
                 {
                     id: 4,
-                    name: '其他',
+                    name: '篮球',
                 },
             ],
             currentIndex: 1,

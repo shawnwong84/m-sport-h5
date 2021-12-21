@@ -10,13 +10,3 @@ export default {
 };
 </script>
 
-<style>
-html,
-body,
-#app {
-    height: 100%;
-    font-size: 14px;
-    overflow: hidden;
-    margin: 0;
-}
-</style>
