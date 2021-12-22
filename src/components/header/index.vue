@@ -13,8 +13,15 @@
                 :key="item.id"
                 @click="toPage(item.path)"
             >
-                <img :src="item.icon" alt="" />
-                <span>{{ item.name }}</span>
+                <img
+                    :src="
+                        $route.path === item.path ? item.activeIcon : item.icon
+                    "
+                    alt=""
+                />
+                <span :class="{ active: $route.path === item.path }">{{
+                    item.name
+                }}</span>
             </div>
         </div>
     </div>
@@ -31,35 +38,35 @@ export default {
                     name: '直播',
                     path: '/home',
                     icon: require('../../assets/image/header/live-icon.png'),
-                    activeIcon: require('../../assets/image/header/live-icon.png'),
+                    activeIcon: require('../../assets/image/header/live-active-icon.png'),
                 },
                 {
                     id: 2,
                     name: '咨询',
                     path: '/new',
                     icon: require('../../assets/image/header/news-icon.png'),
-                    activeIcon: require('../../assets/image/header/live-icon.png'),
+                    activeIcon: require('../../assets/image/header/live-active-icon.png'),
                 },
                 {
                     id: 3,
                     name: '赛事',
                     path: '/match',
                     icon: require('../../assets/image/header/match-icon.png'),
-                    activeIcon: require('../../assets/image/header/live-icon.png'),
+                    activeIcon: require('../../assets/image/header/match-active-icon.png'),
                 },
                 {
                     id: 4,
                     name: '有料',
                     path: '/concern',
                     icon: require('../../assets/image/header/plants-icon.png'),
-                    activeIcon: require('../../assets/image/header/live-icon.png'),
+                    activeIcon: require('../../assets/image/header/plants-active-icon.png'),
                 },
                 {
                     id: 5,
                     name: '我的',
                     path: '/my',
                     icon: require('../../assets/image/header/me-icon.png'),
-                    activeIcon: require('../../assets/image/header/live-icon.png'),
+                    activeIcon: require('../../assets/image/header/me-active-icon.png'),
                 },
             ],
         };
@@ -102,6 +109,9 @@ export default {
             span {
                 font-size: 12px;
                 color: #989898;
+                &.active {
+                    color: $primary-color;
+                }
             }
         }
     }
