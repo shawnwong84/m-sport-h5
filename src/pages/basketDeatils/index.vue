@@ -1416,7 +1416,7 @@ export default {
 .zs-tab-nav {
     background: white;
     margin: 2px;
-    color: #dbb170;
+    color: #f8413d;
 }
 .no-data {
     height: 100vh;

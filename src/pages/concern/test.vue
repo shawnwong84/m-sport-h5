@@ -297,7 +297,7 @@ export default {
 }
 .active span {
     font-size: 18px;
-    border-bottom: 3px solid #dbb170;
+    border-bottom: 3px solid #f8413d;
     padding-bottom: 5px;
     font-weight: 700;
 }
@@ -396,7 +396,7 @@ export default {
 .login-btn {
     width: 100px;
     line-height: 40px;
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
     border-radius: 50px;
     color: white;
     text-align: center;

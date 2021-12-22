@@ -571,7 +571,7 @@ export default {
     cursor: pointer;
 }
 .yellow {
-    background: #dbb170;
+    background: #f8413d;
     color: white;
 }
 .gray {

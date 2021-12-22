@@ -137,7 +137,7 @@ export default {
     /*margin-left: 10px;*/
 }
 .c-ff {
-    color: #dbb170;
+    color: #f8413d;
 }
 .input-mobile {
     line-height: 50px;
@@ -146,7 +146,7 @@ export default {
 }
 .triangle {
     border: 5px solid transparent;
-    border-top-color: #dbb170;
+    border-top-color: #f8413d;
     transform: translateY(49%);
     margin-left: 5px;
     margin-right: 10px;
@@ -166,7 +166,7 @@ export default {
 }
 .active {
     color: white;
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
 }
 .width-100 {
     width: 100%;

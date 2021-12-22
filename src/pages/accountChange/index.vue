@@ -265,7 +265,7 @@ export default {
     background: rgb(242, 244, 247);
 }
 .active {
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
     color: white;
 }
 </style>

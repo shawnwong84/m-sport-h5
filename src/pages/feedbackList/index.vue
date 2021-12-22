@@ -224,9 +224,9 @@ export default {
     padding-bottom: 15px;
 }
 .active {
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%) !important;
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%) !important;
     color: #fff;
-    border: 1px solid #ebcbab !important;
+    border: 1px solid #ff8d86 !important;
 }
 .gary-border {
     height: 10px;

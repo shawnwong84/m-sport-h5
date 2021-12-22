@@ -1021,8 +1021,8 @@ export default {
     height: 30px;
 }
 .cl {
-    color: #dbb170;
-    border-bottom: 1px solid #dbb170;
+    color: #f8413d;
+    border-bottom: 1px solid #f8413d;
 }
 .event-tab {
     background: #f6f7f8;
@@ -1212,7 +1212,7 @@ export default {
 .zs-tab-nav {
     background: white;
     margin: 2px;
-    color: #dbb170;
+    color: #f8413d;
 }
 </style>
 <style>

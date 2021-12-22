@@ -47,7 +47,7 @@ export default {
 }
 .btn-add-screen {
     color: #fff;
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
     line-height: 30px;
     font-size: 12px;
     font-weight: 700;

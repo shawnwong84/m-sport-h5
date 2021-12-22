@@ -1135,7 +1135,7 @@ export default {
 }
 .btn-add-screen {
     color: #fff;
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
     line-height: 30px;
     font-size: 12px;
     font-weight: 700;
@@ -1144,10 +1144,10 @@ export default {
 }
 .subscribe {
     color: white !important;
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
 }
 .c-f8 {
-    color: #dbb170;
+    color: #f8413d;
 }
 .gary {
     color: white !important;
@@ -1210,7 +1210,7 @@ export default {
     line-height: 30px;
     text-align: center;
     border-radius: 50px;
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
     color: white;
 }
 .new-title {
@@ -1224,8 +1224,8 @@ export default {
     font-size: 13px;
 }
 .active {
-    color: #dbb170 !important;
-    /*border-bottom: 3px solid #DBB170;*/
+    color: #f8413d !important;
+    /*border-bottom: 3px solid #f8413d;*/
     /*padding-bottom: 12px;*/
 }
 .ml-40 {
@@ -1327,7 +1327,7 @@ export default {
 }
 .anchor-subscribe {
     color: #fff;
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
     border-radius: 8px;
     padding: 8px 20px;
     font-weight: 700;
@@ -1457,7 +1457,7 @@ export default {
     color: #707070;
 }
 .c-ffa {
-    color: #dbb170;
+    color: #f8413d;
 }
 .hotRankList {
     border-bottom: 1px solid #f3f3f3;
@@ -1543,7 +1543,7 @@ export default {
     display: none;
 }
 .mt-range-progress {
-    background-color: #dbb170 !important;
+    background-color: #f8413d !important;
 }
 .mt-range-runway {
     border-top-width: 4px !important;

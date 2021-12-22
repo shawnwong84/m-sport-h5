@@ -186,7 +186,7 @@ export default {
 }
 .active span {
     font-size: 18px;
-    border-bottom: 3px solid #dbb170;
+    border-bottom: 3px solid #f8413d;
     padding-bottom: 5px;
     font-weight: 700;
 }
@@ -212,9 +212,9 @@ export default {
 }
 .tags {
     font-size: 12px;
-    color: #007aff;
+    color: #f8413d;
     margin-right: 10px;
-    background: rgba(0, 122, 255, 0.1);
+    background: #ffe3e2;
     padding: 2px 3px;
 }
 .banner-img {

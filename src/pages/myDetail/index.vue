@@ -246,7 +246,7 @@ export default {
     width: 100%;
 }
 .sumbit {
-    background: linear-gradient(132deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
     color: white;
     border-radius: 5px;
     padding: 5px 10px;

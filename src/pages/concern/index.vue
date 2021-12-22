@@ -506,7 +506,7 @@ export default {
     padding: 2px 10px;
 }
 .tab-li {
-    background: linear-gradient(145deg, #ebcbab 0%, #dbb170 100%);
+    background: linear-gradient(145deg, #ff8d86 0%, #f8413d 100%);
     border-radius: 3px;
     color: white;
     padding: 0px 10px;
@@ -515,7 +515,7 @@ export default {
 .xian {
     width: 1px;
     height: 10px;
-    background: #ebcbab;
+    background: #ff8d86;
 }
 .zj-img {
     width: 30px;
@@ -564,7 +564,7 @@ export default {
     text-align: center;
 }
 .active {
-    border-bottom: 3px solid #dbb170;
+    border-bottom: 3px solid #f8413d;
     font-weight: 600;
 }
 .anchorIcon {
