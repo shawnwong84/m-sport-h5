@@ -693,7 +693,7 @@ export default {
                     }
                 });
             } else {
-                this.$tost({
+                this.$toast({
                     message: '请先登录！',
                 });
             }
@@ -1052,7 +1052,7 @@ export default {
         },
         openQQ(text) {
             this.cotyTxt(text);
-            this.$tost({
+            this.$toast({
                 message: 'QQ号：' + text + '，已复制成功',
             });
             window.open(
@@ -1064,14 +1064,14 @@ export default {
         },
         openWx(text) {
             this.cotyTxt(text);
-            this.$tost({
+            this.$toast({
                 message: '微信号：' + text + '，已复制成功',
             });
             window.open('weixin://');
         },
         openqqGroup(text) {
             this.cotyTxt(text);
-            this.$tost({
+            this.$toast({
                 message: 'QQ群号：' + text + '，已复制成功',
             });
             window.open(

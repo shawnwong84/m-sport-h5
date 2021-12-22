@@ -188,7 +188,7 @@ export default {
             };
             this.$axios('post', '/user/userFeedback', param).then((res) => {
                 if (res.code === 200) {
-                    this.$tost({
+                    this.$toast({
                         message: '提交成功！',
                     });
                     this.contactDetails = '';

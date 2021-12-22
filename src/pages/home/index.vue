@@ -6,18 +6,26 @@
                 v-for="item in navList"
                 :key="item.id"
                 :class="{ active: item.id == currentIndex }"
+                @click="changeCuerrent(item)"
             >
                 {{ item.name }}
             </div>
         </div>
         <div class="nav-conent">
-            <Recommend></Recommend>
+            <component
+                :is="componentId"
+                @changeIndex="changeCuerrent"
+            ></component>
         </div>
     </div>
 </template>
 
 <script>
-import Recommend from './recommend';
+import recommend from './recommend';
+import allBall from './allBall';
+import basketBall from './basketBall';
+import footerBall from './footerBall';
+
 export default {
     name: 'home',
     data() {
@@ -26,29 +34,42 @@ export default {
                 {
                     id: 1,
                     name: '推荐',
+                    component: 'recommend',
                 },
                 {
                     id: 2,
                     name: '全部',
+                    component: 'allBall',
                 },
                 {
                     id: 3,
                     name: '足球',
+                    component: 'footerBall',
                 },
                 {
                     id: 4,
                     name: '篮球',
+                    component: 'basketBall',
                 },
             ],
             currentIndex: 1,
+            componentId: 'recommend',
         };
     },
     components: {
-        Recommend,
+        recommend,
+        allBall,
+        basketBall,
+        footerBall,
     },
     watch: {},
     mounted() {},
-    methods: {},
+    methods: {
+        changeCuerrent(val) {
+            this.componentId = val.component;
+            this.currentIndex = val.id;
+        },
+    },
 };
 </script>
 
@@ -86,7 +107,7 @@ export default {
             }
         }
     }
-    .nav-conent{
+    .nav-conent {
         width: 100%;
     }
 }

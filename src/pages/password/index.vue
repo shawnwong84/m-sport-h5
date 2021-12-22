@@ -141,7 +141,7 @@ export default {
                     }
                 });
             } else {
-                this.$tost({
+                this.$toast({
                     message: '请输入手机号',
                 });
             }

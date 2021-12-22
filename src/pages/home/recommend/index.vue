@@ -71,12 +71,71 @@
             <h2 class="title">正在热播</h2>
             <div class="match-list">
                 <matchItem
-                    v-for="item in hotList"
+                    v-for="item in [...hotList].splice(0, 6)"
                     :key="item.roomId"
                     :item="item"
                 ></matchItem>
             </div>
-            <div class="check-more">查看更多</div>
+            <div
+                class="check-more"
+                @click="changeIndex({ component: 'allBall', id: 2 })"
+            >
+                查看更多
+            </div>
+        </div>
+        <div class="rem-anchor-box">
+            <h2 class="title">推荐主播</h2>
+            <div class="anchor-list">
+                <div
+                    class="anchor-item"
+                    v-for="item in [...hotExpertList].splice(0, 3)"
+                    :key="item.anchorId"
+                >
+                    <div class="anchor-avatar">
+                        <img :src="item.anchorIcon" alt="" />
+                    </div>
+                    <div class="anchor-name">{{ item.anchorName }}</div>
+                    <div
+                        class="rem-btn"
+                        :class="{ alreadly: item.follow }"
+                        @click="focusExpert(item)"
+                    >
+                        {{ item.follow ? '已关注' : '关注' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="match-common-box">
+            <h2 class="title">足球直播</h2>
+            <div class="match-list">
+                <matchItem
+                    v-for="item in [...footerBallList].splice(0, 6)"
+                    :key="item.roomId"
+                    :item="item"
+                ></matchItem>
+            </div>
+            <div
+                class="check-more"
+                @click="changeIndex({ component: 'footerBall', id: 3 })"
+            >
+                查看更多
+            </div>
+        </div>
+        <div class="match-common-box">
+            <h2 class="title">篮球直播</h2>
+            <div class="match-list">
+                <matchItem
+                    v-for="item in [...basketBallList].splice(0, 6)"
+                    :key="item.roomId"
+                    :item="item"
+                ></matchItem>
+            </div>
+            <div
+                class="check-more"
+                @click="changeIndex({ component: 'basketBall', id: 4 })"
+            >
+                查看更多
+            </div>
         </div>
     </div>
 </template>
@@ -92,6 +151,9 @@ export default {
             bannerList: [],
             hotMatchList: [],
             hotList: [],
+            hotExpertList: [],
+            footerBallList: [],
+            basketBallList: [],
         };
     },
     components: {
@@ -102,6 +164,9 @@ export default {
         this.getBannerList();
         this.getMatch();
         this.getHotList();
+        this.getHotExpert();
+        this.getFooterBall();
+        this.getBasketBall();
     },
     methods: {
         getBannerList() {
@@ -156,9 +221,22 @@ export default {
             };
             this.$axios('post', '/live/getHotLiveList', param).then((res) => {
                 if (res.code === 200) {
-                    this.hotList = res.data.dataList.splice(0, 6);
+                    this.hotList = res.data.dataList;
                 }
             });
+        },
+        // 热门专家
+        getHotExpert() {
+            let param = {
+                type: 1,
+            };
+            this.$axios('post', '/hotRank/featuredExpertsList', param).then(
+                (res) => {
+                    if (res.code === 200) {
+                        this.hotExpertList = res.data;
+                    }
+                },
+            );
         },
         // 用户预约
         getAppoinment(item) {
@@ -189,8 +267,80 @@ export default {
                 this.$router.push('/login');
             }
         },
+        // 用户关注
+        focusExpert(val) {
+            if (!Cookie.get('token')) {
+                this.setPermissionModal(1);
+            } else {
+                let param = {
+                    id: val.anchorId,
+                };
+                if (val.follow) {
+                    this.$axios(
+                        'post',
+                        '/hotRank/cancelFocusExpert',
+                        param,
+                    ).then((res) => {
+                        if (res.code === 200) {
+                            this.getHotExpert();
+                            this.$toast({
+                                message: '取消关注成功',
+                            });
+                        } else {
+                            this.$toast({
+                                message: res.msg,
+                            });
+                        }
+                    });
+                } else {
+                    this.$axios('post', '/hotRank/focusExpert', param).then(
+                        (res) => {
+                            if (res.code === 200) {
+                                this.getHotExpert();
+                                this.$toast({
+                                    message: '关注成功',
+                                });
+                            } else {
+                                this.$toast({
+                                    message: res.msg,
+                                });
+                            }
+                        },
+                    );
+                }
+            }
+        },
+        //获取足球比赛
+        getFooterBall() {
+            let param = {
+                pageNum: 1,
+                pageSize: 30,
+                type: 0,
+            };
+            this.$axios('post', '/live/getTopLiveList', param).then((res) => {
+                if (res.code === 200) {
+                    this.footerBallList = res.data.dataList;
+                }
+            });
+        },
+        //获取篮球比赛
+        getBasketBall() {
+            let param = {
+                pageNum: 1,
+                pageSize: 30,
+                type: 1,
+            };
+            this.$axios('post', '/live/getTopLiveList', param).then((res) => {
+                if (res.code === 200) {
+                    this.basketBallList = res.data.dataList;
+                }
+            });
+        },
         toPage(path) {
             this.$router.push(path);
+        },
+        changeIndex(val) {
+            this.$emit('changeIndex', val);
         },
     },
 };
@@ -200,6 +350,11 @@ export default {
 .recommend-box {
     width: 100%;
     padding: 16px 16px 70px;
+    .title {
+        font-size: 16px;
+        color: #282828;
+        margin-bottom: 12px;
+    }
     .banner-swiper-list {
         width: 100%;
         height: 136px;
@@ -337,11 +492,7 @@ export default {
     .match-common-box {
         width: 100%;
         margin-bottom: 12px;
-        .title {
-            font-size: 16px;
-            color: #282828;
-            margin-bottom: 12px;
-        }
+
         .match-list {
             width: 100%;
             @include flexBetweenCenterWrap();
@@ -355,6 +506,55 @@ export default {
             font-size: 12px;
             margin-top: 12px;
             @include flexCenter();
+        }
+    }
+    .rem-anchor-box {
+        width: 100%;
+        margin-bottom: 12px;
+        .anchor-list {
+            width: 100%;
+            @include flexBetweenCenter();
+            .anchor-item {
+                width: 110px;
+                height: 110px;
+                background: #ffffff;
+                border-radius: 4px;
+                @include flexColumnCenter();
+                .anchor-avatar {
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 50%;
+                    margin-bottom: 10px;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: 50%;
+                    }
+                }
+                .anchor-name {
+                    font-size: 12px;
+                    color: #282828;
+                    margin-bottom: 8px;
+                }
+                .rem-btn {
+                    width: 60px;
+                    height: 18px;
+                    background: linear-gradient(
+                        90deg,
+                        #ff8d86 0%,
+                        #f8413d 100%
+                    );
+                    border-radius: 9px;
+                    font-size: 12px;
+                    color: #ffffff;
+                    @include flexCenter();
+                    &.alreadly {
+                        color: #f8413d;
+                        background: #ffe3e2;
+                    }
+                }
+            }
         }
     }
 }

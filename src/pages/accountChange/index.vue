@@ -142,7 +142,7 @@ export default {
             };
             this.$axios('post', '/user/forgotPassword', param).then((res) => {
                 if (res.code === 200) {
-                    this.$tost({
+                    this.$toast({
                         message: '修改密码成功，请重新登录！',
                     });
                     Cookie.remove('token');
@@ -193,7 +193,7 @@ export default {
                     (res) => {
                         if (res.code === 200) {
                             this.erro = '';
-                            this.$tost({
+                            this.$toast({
                                 message: '修改手机号成功，请重新登录！',
                             });
                             Cookie.remove('token');

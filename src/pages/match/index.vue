@@ -387,7 +387,7 @@ export default {
                     },
                 );
             } else {
-                this.$tost({
+                this.$toast({
                     message: '请先登录！',
                 });
             }

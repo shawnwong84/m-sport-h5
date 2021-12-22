@@ -5,15 +5,16 @@ import App from './App';
 import './assets/css/base.css';
 import './assets/css/content.css';
 import './assets/scss/global.scss';
-import 'swiper/css/swiper.min.css'
+import 'swiper/css/swiper.min.css';
 
 import 'babel-polyfill';
 import ax from './api/index';
 import Utils from './assets/js/utils.js';
-import { Toast, DatetimePicker, Popup, Picker, Range } from 'mint-ui';
-import moment from 'moment'
-   
-  
+import { DatetimePicker, Popup, Picker, Range } from 'mint-ui';
+import moment from 'moment';
+import { Toast } from 'vant';
+Vue.use(Toast);
+
 import VueLazyload from 'vue-lazyload';
 
 import webimconfig from './utils/webim.config.js';
@@ -63,7 +64,6 @@ Vue.prototype.$moment = moment;
 Vue.use(websdk);
 // Vue.use(Timeline)
 // Vue.use(TimelineItem)
-Vue.prototype.$tost = Toast;
 Vue.prototype.$utils = Utils;
 // Vue.prototype.$des = Des
 Vue.use(ax);
@@ -81,17 +81,3 @@ new Vue({
     el: '#app',
     render: (h) => h(App),
 });
-const setHtmlFontSize = () => {
-    const htmlDom = document.getElementsByTagName('html')[0];
-    let htmlWidth =
-        document.documentElement.clientWidth || document.body.clientWidth;
-    if (htmlWidth >= 750) {
-        htmlWidth = 750;
-    }
-    if (htmlWidth <= 320) {
-        htmlWidth = 320;
-    }
-    htmlDom.style.fontSize = `${htmlWidth / 7.5}px`;
-};
-window.onresize = setHtmlFontSize;
-setHtmlFontSize();
