@@ -12,8 +12,8 @@ import ax from './api/index';
 import Utils from './assets/js/utils.js';
 import { DatetimePicker, Popup, Picker, Range } from 'mint-ui';
 import moment from 'moment';
-import { Toast } from 'vant';
-Vue.use(Toast);
+import { Toast, List } from 'vant';
+Vue.use(Toast).use(List);
 
 import VueLazyload from 'vue-lazyload';
 
