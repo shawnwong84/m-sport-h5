@@ -5,7 +5,7 @@
  * @date: Do not edit
 -->
 <template>
-    <div class="match-item">
+    <div class="match-item" @click="toPage(item.roomId)">
         <div class="cover-img">
             <img :src="item.matchCutImg" alt="" />
             <div class="anchor-info">
@@ -32,7 +32,11 @@ export default {
     components: {},
     watch: {},
     mounted() {},
-    methods: {},
+    methods: {
+        toPage(id) {
+            this.$router.push({ name: 'room', query: { id: id } });
+        },
+    },
 };
 </script>
 

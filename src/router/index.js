@@ -38,12 +38,12 @@ const router = new Router({
                     },
                 },
                 {
-                    path: '/concern',
-                    name: 'concern',
-                    component: () => import('@/pages/concern/index.vue'),
+                    path: '/attention',
+                    name: 'attention',
+                    component: () => import('@/pages/attention/index.vue'),
                     meta: {
                         footShow: true,
-                        requiresAuth: false,
+                        requiresAuth: true,
                     },
                 },
                 {

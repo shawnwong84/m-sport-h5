@@ -56,8 +56,8 @@ export default {
                 },
                 {
                     id: 4,
-                    name: '有料',
-                    path: '/concern',
+                    name: '关注',
+                    path: '/attention',
                     icon: require('../../assets/image/header/plants-icon.png'),
                     activeIcon: require('../../assets/image/header/plants-active-icon.png'),
                 },
