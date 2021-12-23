@@ -252,6 +252,9 @@ export default {
                     ).then((res) => {
                         if (res.code === 200) {
                             this.getMatch();
+                            this.$toast({
+                                message: '取消预约成功',
+                            });
                         }
                     });
                 } else {
@@ -259,6 +262,9 @@ export default {
                         (res) => {
                             if (res.code === 200) {
                                 this.getMatch();
+                                this.$toast({
+                                    message: '预约成功',
+                                });
                             }
                         },
                     );

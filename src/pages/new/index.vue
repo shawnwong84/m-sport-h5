@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="new" id="newBox">
-            <v-down style="position: fixed; width: 100%; z-index: 99"></v-down>
+            <!-- <v-down style="position: fixed; width: 100%; z-index: 99"></v-down> -->
             <div class="home-header">
                 <div
                     v-for="(item, index) in tagList"
@@ -177,7 +177,7 @@ export default {
     color: #282828;
     line-height: 45px;
     display: flex;
-    margin-top: 55px;
+    /* margin-top: 55px; */
 }
 .home-header > div {
     width: 80px;
