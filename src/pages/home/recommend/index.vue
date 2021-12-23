@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="rem-anchor-box">
-            <h2 class="title">推荐主播</h2>
+            <h2 class="title">推荐专家</h2>
             <div class="anchor-list">
                 <div
                     class="anchor-item"
