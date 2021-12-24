@@ -1,104 +1,118 @@
 <template>
-    <div>
-        <div
-            class="fx align-items justify-between margin-15"
-            @click="$utils.toPage('myDetail')"
-        >
-            <div>
-                <img :src="infoData.avatarUrl" class="head-img" />
+    <div class="my-box">
+        <div class="my-login">
+            <div class="my-avatar">
+                <img
+                    :src="
+                        token
+                            ? infoData.avatarUrl
+                            : require('../../assets/image/my/my-avatar.png')
+                    "
+                    alt=""
+                />
             </div>
-            <div class="fx align-items">
-                <div class="fs-24 fw-700">{{ infoData.userName }}</div>
-                <div class="ml-5">
-                    <img src="../../assets/image/jiankuohao.png" width="10px" />
+            <div class="to-login" v-if="!token">
+                <div class="login-btn" @click="userlogin">登录/注册</div>
+                <div class="login-des">登陆后获取更多精彩内容~</div>
+            </div>
+            <div class="login-info" v-if="token">
+                <div class="name">{{ infoData.userName }}</div>
+                <div class="level">
+                    等级：<span>{{ infoData.level }}</span>
                 </div>
             </div>
-        </div>
-        <div class="live fx justify-between">
-            <div class="ta-c">
-                <div class="fs-24 fw-700">Lv.{{ infoData.level }}</div>
-                <div>等级</div>
-            </div>
-            <div class="top-down-center"></div>
-            <div class="ta-c">
-                <div class="fs-24 fw-700">{{ infoData.gold }}</div>
-                <div>金币</div>
+            <div class="right-icon" v-if="token">
+                <img src="../../assets/image/my/right-icon.png" alt="" />
             </div>
         </div>
-        <div class="border-gray"></div>
-        <div
-            class="fx align-items justify-between margin-15 border-bottom pb-15"
-            @click="$utils.toPage('message')"
-        >
-            <div class="fx align-items">
-                <div>
-                    <img src="../../assets/image/xiaoxi.png" width="25px" />
+        <div class="gold-box">
+            <div class="left">
+                <img src="../../assets/image/my/gold-icon.png" alt="" />
+                <span>{{ token ? infoData.gold : 0 }}</span>
+            </div>
+            <div class="right">
+                <span>金币</span>
+                <img src="../../assets/image/my/right-icon.png" alt="" />
+            </div>
+        </div>
+        <div class="my-nav">
+            <div class="nav-item" v-for="item in navList" :key="item.id">
+                <div class="left">
+                    <img :src="item.icon" alt="" />
+                    <span>{{ item.name }}</span>
                 </div>
-                <div class="ml-10">消息中心</div>
-            </div>
-            <div>
-                <img src="../../assets/image/jiankuohao.png" width="10px" />
-            </div>
-        </div>
-        <div
-            class="fx align-items justify-between margin-15 border-bottom pb-15"
-            @click="$utils.toPage('feedbackList')"
-        >
-            <div class="fx align-items">
-                <div>
-                    <img src="../../assets/image/fankui.png" width="25px" />
+                <div class="right">
+                    <img src="../../assets/image/my/right-icon.png" alt="" />
                 </div>
-                <div class="ml-10">我的反馈</div>
-            </div>
-            <div>
-                <img src="../../assets/image/jiankuohao.png" width="10px" />
-            </div>
-        </div>
-        <div
-            class="fx align-items justify-between margin-15 border-bottom pb-15"
-            @click="topPage(infoData.phone)"
-        >
-            <div class="fx align-items">
-                <div>
-                    <img src="../../assets/image/zhanghao.png" width="25px" />
-                </div>
-                <div class="ml-10">账号与绑定</div>
-            </div>
-            <div>
-                <img src="../../assets/image/jiankuohao.png" width="10px" />
-            </div>
-        </div>
-        <div
-            class="fx align-items justify-between margin-15 border-bottom pb-15"
-            @click="$utils.toPage('about')"
-        >
-            <div class="fx align-items">
-                <div>
-                    <img src="../../assets/image/guanyu.png" width="25px" />
-                </div>
-                <div class="ml-10">关于</div>
-            </div>
-            <div>
-                <img src="../../assets/image/jiankuohao.png" width="10px" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { Cookie } from '../../api/cookie';
 export default {
-    name: 'index',
+    name: 'my',
     data() {
         return {
-            infoData: [],
+            navList: [
+                // {
+                //     id: 0,
+                //     name: '我的关注',
+                //     path: '',
+                //     icon: require('../../assets/image/my/follow-icon.png'),
+                // },
+                // {
+                //     id: 1,
+                //     name: '我的等级',
+                //     path: '',
+                //     icon: require('../../assets/image/my/level-icon.png'),
+                // },
+                {
+                    id: 2,
+                    name: '成为主播',
+                    path: '',
+                    icon: require('../../assets/image/my/anchor-icon.png'),
+                },
+                {
+                    id: 3,
+                    name: '排行榜',
+                    path: '',
+                    icon: require('../../assets/image/my/rank-icon.png'),
+                },
+                {
+                    id: 4,
+                    name: '在线客服',
+                    path: '',
+                    icon: require('../../assets/image/my/service-icon.png'),
+                },
+                {
+                    id: 5,
+                    name: '分析APP',
+                    path: '',
+                    icon: require('../../assets/image/my/share-icon.png'),
+                },
+                {
+                    id: 6,
+                    name: '意见反馈',
+                    path: '',
+                    icon: require('../../assets/image/my/idea-icon.png'),
+                },
+            ],
+            token: Cookie.get('token'),
+            infoData: {},
         };
     },
+    components: {},
+    watch: {},
     mounted() {
-        this.getInfo();
+        if (this.token) {
+            this.getInfo();
+        }
     },
     methods: {
-        topPage(phone) {
-            this.$router.push({ name: 'account', query: { phone: phone } });
+        userlogin() {
+            this.$router.push('/login');
         },
         getInfo() {
             this.$axios('post', '/user/userInfo').then((res) => {
@@ -111,33 +125,137 @@ export default {
 };
 </script>
 
-<style scoped>
-.head-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-}
-.fs-24 {
-    font-size: 24px;
-}
-.margin-15 {
-    margin: 15px;
-}
-.top-down-center {
-    width: 1px;
-    height: 50px;
-    background: #ddd;
-}
-.live {
-    margin-right: 20%;
-    margin-left: 20%;
-}
-.border-gray {
-    height: 10px;
-    background: rgb(244, 244, 244);
-    margin-top: 20px;
-}
-.border-bottom {
-    border-bottom: 1px solid #ddd;
+<style scoped lang="scss">
+.my-box {
+    width: 100%;
+    height: 100%;
+    background: url('../../assets/image//my/my-bg.png');
+    background-position: top;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    padding: 16px;
+    .my-login {
+        width: 100%;
+        @include flexBetweenCenter();
+        margin-top: 20px;
+        .my-avatar {
+            width: 62px;
+            height: 62px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+        }
+        .to-login {
+            flex: 1;
+            margin-left: 22px;
+            @include flexColumnStart2();
+            .login-btn {
+                width: 99px;
+                height: 28px;
+                background: #f8413d;
+                border-radius: 14px;
+                @include flexCenter();
+                font-size: 16px;
+                color: #fff;
+            }
+            .login-des {
+                font-size: 12px;
+                color: #666666;
+                margin-top: 5px;
+            }
+        }
+        .login-info {
+            flex: 1;
+            margin-left: 22px;
+            @include flexColumnStart2();
+            .name {
+                font-weight: 500;
+                color: #282828;
+                font-size: 20px;
+            }
+            .level {
+                font-size: 12px;
+                color: #666666;
+                margin-top: 5px;
+            }
+        }
+        .right-icon {
+            img {
+                width: 12px;
+                height: auto;
+            }
+        }
+    }
+    .gold-box {
+        width: 100%;
+        height: 56px;
+        padding: 0 16px;
+        margin: 27px 0 14px;
+        background: #ffffff;
+        border-radius: 4px;
+        border: 1px solid #ffffff;
+        @include flexBetweenCenter();
+        .left {
+            @include flexCenter();
+            img {
+                width: 21px;
+                height: 21px;
+                margin-right: 8px;
+            }
+            span {
+                font-size: 18px;
+                color: #282828;
+            }
+        }
+        .right {
+            @include flexCenter();
+            img {
+                width: 12px;
+                height: 12px;
+                margin-left: 5px;
+            }
+            span {
+                font-size: 14px;
+                color: #282828;
+            }
+        }
+    }
+    .my-nav {
+        width: 100%;
+        background: #ffffff;
+        border-radius: 4px;
+        .nav-item {
+            width: 100%;
+            height: 43px;
+            padding: 0 16px;
+            @include flexBetweenCenter();
+            &:not(:last-child) {
+                border-bottom: 1px solid #f1f1f1;
+            }
+        }
+        .left {
+            @include flexCenter();
+            img {
+                width: 20px;
+                height: auto;
+                margin-right: 8px;
+            }
+            span {
+                font-size: 12px;
+            }
+        }
+        .right {
+            width: 12px;
+            height: 12px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
 }
 </style>

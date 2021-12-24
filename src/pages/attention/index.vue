@@ -91,7 +91,7 @@ export default {
     padding-bottom: 65px;
     .attention-list {
         width: 100%;
-        padding: 16px;
+        padding: 16px 16px 10px;
         background: #fff;
         margin-bottom: 22px;
         .attention-item {

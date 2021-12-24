@@ -52,7 +52,7 @@ const router = new Router({
                     component: () => import('@/pages/my/index.vue'),
                     meta: {
                         footShow: true,
-                        requiresAuth: true,
+                        requiresAuth: false,
                     },
                 },
                 {

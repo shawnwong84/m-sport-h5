@@ -65,7 +65,16 @@
             </div>
         </div>
         <div class="notice-box">
-            <span class="title">公告</span>
+            <span class="notice-title">公告：</span>
+            <marquee-text class="notice-content">
+                <p
+                    v-for="item in noticeList"
+                    :key="item.id"
+                    class="content-item"
+                >
+                    {{ item.content }}
+                </p>
+            </marquee-text>
         </div>
         <div class="match-common-box">
             <h2 class="title">正在热播</h2>
@@ -142,6 +151,7 @@
 
 <script>
 import Swiper from 'swiper';
+import MarqueeText from 'vue-marquee-text-component';
 import { Cookie } from '../../../api/cookie';
 import matchItem from '../../../components/matchItem';
 export default {
@@ -151,6 +161,7 @@ export default {
             bannerList: [],
             hotMatchList: [],
             hotList: [],
+            noticeList: [],
             hotExpertList: [],
             footerBallList: [],
             basketBallList: [],
@@ -158,12 +169,14 @@ export default {
     },
     components: {
         matchItem,
+        MarqueeText,
     },
     watch: {},
     mounted() {
         this.getBannerList();
         this.getMatch();
         this.getHotList();
+        this.getNotice();
         this.getHotExpert();
         this.getFooterBall();
         this.getBasketBall();
@@ -237,6 +250,18 @@ export default {
                     }
                 },
             );
+        },
+        // 公告
+        getNotice() {
+            let param = {
+                pageNum: 1,
+                pageSize: 10,
+            };
+            this.$axios('post', '/common/getMessageList', param).then((res) => {
+                if (res.code === 200) {
+                    this.noticeList = res.data.dataList;
+                }
+            });
         },
         // 用户预约
         getAppoinment(item) {
@@ -490,9 +515,19 @@ export default {
         border-radius: 4px;
         @include flexStartCenter();
         margin-bottom: 12px;
-        .title {
+        padding: 0 6px;
+        .notice-title {
             font-size: 12px;
             color: $primary-color;
+        }
+        .notice-content {
+            flex: 1;
+            font-size: 12px;
+            color: $primary-color;
+            padding-left: 8px;
+            .content-item {
+                margin-right: 20px;
+            }
         }
     }
     .match-common-box {
