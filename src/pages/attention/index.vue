@@ -97,6 +97,7 @@ export default {
         .attention-item {
             width: 100%;
             @include flexBetweenCenter();
+            margin-bottom: 10px;
             .anchor-avatar {
                 width: 46px;
                 height: 46px;
