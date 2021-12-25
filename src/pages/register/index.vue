@@ -1,132 +1,87 @@
 <template>
-    <div class="login">
-        <div style="margin-left: -10px" class="fx justify-between">
-            <div @click="$utils.goBack">
-                <img src="../../assets/image/back.png" width="20px" />
-            </div>
-            <div class="fs-18 fw-700 c-ff" @click="toPage('login')">登录</div>
-        </div>
-        <div class="fs-30 fw-700">注册</div>
+    <div class="register-box">
+        <h2 class="title">注册</h2>
         <div class="user-agreement">
             <span>注册登录即代表你已同意</span>
-            <span class="c-ff" @click="toPage('agreement')">《用户协议》</span
-            ><span class="c-ff" @click="toPage('privacy')">《隐私协议》</span>
+            <span class="agreement-text" @click="toPage('/agreement')"
+                >《用户协议》</span
+            ><span class="agreement-text" @click="toPage('/privacy')"
+                >《隐私协议》</span
+            >
         </div>
-        <div class="fx align-items input-mobile">
-            <div class="fx">
-                <div>+86</div>
-                <div class="triangle"></div>
-            </div>
-            <div class="width-100">
-                <input
-                    type="text"
-                    class="width-100"
+        <div class="close-icon" @click="$router.back()">
+            <img src="../../assets/image/login/close-icon.png" alt="" />
+        </div>
+        <div class="user-form">
+            <van-form @submit="onSubmit">
+                <van-field
                     v-model="phone"
-                    placeholder="输入手机号码"
+                    name="phone"
+                    label="+86"
+                    placeholder="请输入手机号"
+                    :rules="[{ required: true, message: '请输入手机号' }]"
                 />
-            </div>
-        </div>
-        <div class="fx justify-between input-mobile">
-            <div class="width-100">
-                <input
-                    type="text"
-                    class="width-100"
+                <van-field
                     v-model="smsCode"
-                    placeholder="输入验证码"
+                    center
+                    clearable
+                    label="验证码"
+                    placeholder="请输入验证码"
+                    :rules="[{ required: true, message: '请输入验证码' }]"
+                >
+                    <template #button>
+                        <div class="sms-btn" @click="sendSms">
+                            {{ codeMsg }}
+                        </div>
+                    </template>
+                </van-field>
+                <van-field
+                    v-model="nickName"
+                    name="nickName"
+                    label="用户名"
+                    placeholder="请输入用户名"
+                    :rules="[{ required: true, message: '请输入用户名' }]"
                 />
-            </div>
-            <div>
-                <input
-                    type="button"
-                    class="getNumber"
-                    v-model="codeMsg"
-                    @click="sendSms"
-                    :disabled="codeDisabled"
-                />
-            </div>
-        </div>
-        <div class="input-mobile width-100">
-            <input
-                type="text"
-                class="width-100"
-                v-model="nickName"
-                placeholder="输入用户名"
-            />
-        </div>
-        <div class="fx justify-between input-mobile">
-            <div class="width-100">
-                <input
+                <van-field
+                    v-model="password"
                     type="password"
-                    class="width-100"
-                    v-if="isEye === 1"
-                    v-model="password"
-                    placeholder="输入6-24位登录密码"
+                    name="password"
+                    label="密码"
+                    placeholder="密码"
+                    :rules="[{ required: true, message: '请输入密码' }]"
                 />
-                <input
-                    type="text"
-                    class="width-100"
-                    v-if="isEye === 2"
-                    v-model="password"
-                    placeholder="输入6-24位登录密码"
-                />
-            </div>
-            <div class="fx align-items">
-                <img
-                    src="../../assets/image/input-close.png"
-                    width="25px"
-                    @click="clearPwd"
-                />
-                <img
-                    class="ml-20"
-                    v-if="isEye === 1"
-                    src="../../assets/image/pwd-eye.png"
-                    @click="checkEye"
-                    width="20px"
-                />
-                <img
-                    class="ml-20"
-                    v-if="isEye === 2"
-                    src="../../assets/image/pwd-eye-active.png"
-                    @click="checkEye"
-                    width="20px"
-                />
-            </div>
+                <div class="sub-btn">
+                    <van-button block type="primary" native-type="submit"
+                        >确定</van-button
+                    >
+                </div>
+            </van-form>
         </div>
-        <div
-            class="submit"
-            :class="
-                password !== '' && phone !== '' && smsCode !== ''
-                    ? 'active'
-                    : ''
-            "
-            @click="getReg"
-        >
-            注册
-        </div>
+        <div class="user-login" @click="toPage('/login')">快速登录</div>
     </div>
 </template>
 
 <script>
-import { Cookie } from '../../api/cookie.js';
+import Cookie from '../../api/cookie.js';
 export default {
-    name: 'index',
+    name: 'login',
     data() {
         return {
-            isEye: 1,
-            // 是否禁用按钮
-            codeDisabled: false,
             // 倒计时秒数
             countdown: 60,
             // 按钮上的文字
             codeMsg: '获取验证码',
             // 定时器
             timer: null,
+            password: '',
             phone: '',
             smsCode: '',
             nickName: '',
-            password: '',
         };
     },
+    components: {},
+    watch: {},
+    mounted() {},
     methods: {
         // 获取验证码
         getCode() {
@@ -137,110 +92,122 @@ export default {
                         this.countdown--;
                         if (this.countdown !== 0) {
                             this.codeMsg = this.countdown + 'S';
-                            this.codeDisabled = true;
                         } else {
                             clearInterval(this.timer);
                             this.codeMsg = '获取验证码';
                             this.countdown = 60;
                             this.timer = null;
-                            this.codeDisabled = false;
                         }
                     }
                 }, 1000);
             }
         },
         sendSms() {
+            if (!this.phone) {
+                this.$toast({ message: '请输入手机号' });
+                return;
+            }
             let param = {
                 phone: this.phone,
             };
             this.$axios('post', '/user/sendSms', param).then((res) => {
                 if (res.code === 200) {
                     this.getCode();
-                    // this.matchList = res.data.matchLists
                 }
             });
         },
-        getReg() {
-            let param = {
-                channelId: 0,
-                nickName: this.nickName,
-                password: this.password,
-                phone: this.phone,
-                smsCode: this.smsCode,
-            };
-            this.$axios('post', '/user/registerByPc', param).then((res) => {
+        onSubmit(values) {
+            console.log('submit', values);
+            this.$axios('post', '/user/registerByPc', values).then((res) => {
                 if (res.code === 200) {
                     Cookie.set('token', res.data);
-                    // // sessionStorage.setItem('token', res.data)
-                    // Cookie.set('token', res.data, '/', 'hszhibo.live')
-                    this.$router.push({ name: 'home' });
+                    this.toPage('/');
                 }
             });
         },
-        clearPwd() {
-            this.password = '';
-        },
-        toPage(name) {
-            this.$router.push({ name: name });
-        },
-        checkEye() {
-            if (this.isEye === 1) {
-                this.isEye = 2;
-            } else {
-                this.isEye = 1;
-            }
+        toPage(path) {
+            this.$router.push(path);
         },
     },
 };
 </script>
 
-<style scoped>
-.login {
-    padding: 10px 25px;
-}
-.fs-30 {
-    font-size: 28px;
-    margin-top: 50px;
-    /*margin-left: 10px;*/
-}
-.user-agreement {
-    font-size: 12px;
-    color: #8f8f8f;
-    /*margin-left: 10px;*/
-}
-.c-ff {
-    color: #f8413d;
-}
-.input-mobile {
-    line-height: 50px;
-    border-bottom: 1px solid #ddd;
-    margin-top: 10px;
-}
-.triangle {
-    border: 5px solid transparent;
-    border-top-color: #f8413d;
-    transform: translateY(49%);
-    margin-left: 5px;
-    margin-right: 10px;
-}
-.submit {
+<style scoped lang="scss">
+.register-box {
     width: 100%;
-    line-height: 60px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    border-radius: 50px;
-    border: none;
-    font-size: 18px;
-    font-weight: 600;
-    text-align: center;
-    color: #bcc7d4;
-    background-color: #f2f4f7;
-}
-.active {
-    color: #fff;
-    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
-}
-.width-100 {
-    width: 100%;
+    min-height: 100%;
+    @include bgurl('../../assets/image/login/login-bg.png');
+    background-attachment: fixed;
+    position: relative;
+    padding: 22px;
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        left: 22px;
+        z-index: 9;
+        width: 16px;
+        height: 16px;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    .title {
+        margin-top: 64px;
+        color: #333333;
+        font-size: 20px;
+    }
+    .user-form {
+        margin-top: 50px;
+        ::v-deep .van-cell {
+            background: none;
+            padding: 12px 0;
+        }
+        ::v-deep .van-button--primary {
+            background: linear-gradient(
+                90deg,
+                #ff8d86 0%,
+                #f8413d 100%
+            ) !important;
+            border: none;
+        }
+        .sub-btn {
+            margin-top: 50px;
+        }
+        .sms-btn {
+            background: linear-gradient(
+                90deg,
+                #ff8d86 0%,
+                #f8413d 100%
+            ) !important;
+            padding: 0 10px;
+            height: 36px;
+            border-radius: 2px;
+            @include flexCenter();
+            font-size: 12px;
+            color: #fff;
+        }
+    }
+    .user-agreement {
+        width: 100%;
+        margin: 20px 0;
+        span {
+            color: #aeaeae;
+            font-size: 14px;
+        }
+        .agreement-text {
+            color: $primary-color;
+            display: inline-block;
+        }
+    }
+    .user-login {
+        width: 100%;
+        @include flexEndCenter();
+        margin-top: 40px;
+        color: $primary-color;
+        font-size: 14px;
+        text-decoration: underline;
+    }
 }
 </style>

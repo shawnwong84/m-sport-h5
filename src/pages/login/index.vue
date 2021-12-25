@@ -100,7 +100,7 @@ export default {
         margin-top: 50px;
         ::v-deep .van-cell {
             background: none;
-            padding: 16px 0;
+            padding: 12px 0;
         }
         ::v-deep .van-button--primary {
             background: linear-gradient(
