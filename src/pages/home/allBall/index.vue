@@ -53,7 +53,7 @@ export default {
                 if (res.code === 200) {
                     this.ballList = this.ballList.concat(res.data.dataList);
                 }
-                if (res.data.dataList.length === 0) {
+                if (res.data.dataList && res.data.dataList.length === 0) {
                     this.finished = true;
                 }
             });

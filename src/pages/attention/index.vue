@@ -6,7 +6,7 @@
 -->
 <template>
     <div class="attention-box">
-        <div class="attention-list" v-if="userAnchorList.length>0">
+        <div class="attention-list" v-if="userAnchorList.length > 0">
             <div
                 class="attention-item"
                 v-for="item in userAnchorList"
@@ -26,7 +26,6 @@
                 </div>
             </div>
         </div>
-        .
         <div class="match-common-box">
             <h2 class="title">正在热播</h2>
             <div class="match-list">
