@@ -301,7 +301,7 @@ export default {
         // 用户关注
         focusExpert(val) {
             if (!Cookie.get('token')) {
-                this.setPermissionModal(1);
+                this.$router.push('/login');
             } else {
                 let param = {
                     id: val.anchorId,
