@@ -100,7 +100,7 @@
                     <div class="fs-16 mt-15 ta-c">主播正在赶来的路上......</div>
                 </div>
             </div>
-            <div class="fx justify-between">
+            <div class="fx justify-between room-nav">
                 <div
                     @click="checkTab(1)"
                     class="ml-20 liveRoom-wrapper"
@@ -410,27 +410,6 @@
             </div>
             <input id="copy" type="text" value="" style="opacity: 0" />
         </div>
-        <div class="fade" v-if="isShowReg" @click="closePop"></div>
-        <div class="succ-pop" v-if="isShowReg">
-            <div class="mt-10">
-                <img
-                    src="../../assets/image/fade-logo1.png"
-                    style="width: 100px; height: 100px"
-                />
-            </div>
-            <div class="pop-txt">
-                您已观看一分钟,如要继续观看,请注册成为会员
-            </div>
-            <div @click="toRegister">
-                <img src="../../assets/image/fade-btn1.png" width="200px" />
-            </div>
-            <div class="fs-12 mt-20">
-                <span class="c-9D">注册登录即代表你已同意</span>
-                <span class="c-ffa" @click="toPage1('agreement')"
-                    >《用户协议》</span
-                >
-            </div>
-        </div>
     </div>
 </template>
 
@@ -465,7 +444,7 @@ export default {
             showDanmu: false,
             timerToken: null,
             isPlay: false,
-            isShowReg: false,
+
             player: null,
             notice: '',
             timerNotice: null,
@@ -514,14 +493,6 @@ export default {
         // },
         toRegister() {
             this.$router.push({ name: 'register' });
-        },
-        get() {
-            this.pause();
-            this.isShowReg = true;
-        },
-        closePop() {
-            this.isShowReg = false;
-            this.play();
         },
         goBack() {
             this.$router.push({
@@ -1085,7 +1056,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .mr-18 {
     margin-right: 19px;
 }
@@ -1115,9 +1086,15 @@ export default {
 .c-28 {
     color: #282828;
 }
+.room-nav {
+    width: 100%;
+    height: 45px;
+    background: #ffffff;
+    border-top: 1px solid #f1f1f1;
+}
 .liveRoom-wrapper {
     color: #8f8f8f;
-    height: 50px;
+    height: 100%;
     text-align: center;
     font-size: 15px;
     display: flex;
@@ -1225,8 +1202,16 @@ export default {
 }
 .active {
     color: #f8413d !important;
-    /*border-bottom: 3px solid #f8413d;*/
-    /*padding-bottom: 12px;*/
+    @include flexColumnCenter();
+    &::after {
+        display: block;
+        content: '';
+        width: 20px;
+        height: 2px;
+        background: linear-gradient(180deg, #ff8d86 0%, #f8413d 100%);
+        border-radius: 1px;
+        transform: translateY(10px);
+    }
 }
 .ml-40 {
     margin-left: 40px;

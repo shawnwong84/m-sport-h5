@@ -10,7 +10,7 @@
         <div class="foot-img">
             <img src="../../assets/image/fade-logo1.png" width="100px" />
         </div>
-        <div class="ta-c fs-20 fw-700 mt-20">xx直播</div>
+        <div class="ta-c fs-20 fw-700 mt-20">M直播</div>
         <div class="ta-c fs-12 c-9D mt-5">1.0.0</div>
         <div class="c-9D bottom">Copyright © 2021</div>
     </div>

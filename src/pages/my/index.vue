@@ -56,18 +56,18 @@ export default {
     data() {
         return {
             navList: [
-                // {
-                //     id: 0,
-                //     name: '我的关注',
-                //     path: '',
-                //     icon: require('../../assets/image/my/follow-icon.png'),
-                // },
-                // {
-                //     id: 1,
-                //     name: '我的等级',
-                //     path: '',
-                //     icon: require('../../assets/image/my/level-icon.png'),
-                // },
+                {
+                    id: 0,
+                    name: '我的关注',
+                    path: '',
+                    icon: require('../../assets/image/my/follow-icon.png'),
+                },
+                {
+                    id: 1,
+                    name: '我的等级',
+                    path: '',
+                    icon: require('../../assets/image/my/level-icon.png'),
+                },
                 {
                     id: 2,
                     name: '成为主播',

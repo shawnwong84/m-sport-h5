@@ -1,174 +1,138 @@
 <template>
-    <div class="login">
-        <div style="margin-left: -10px" @click="goBack">
-            <img src="../../assets/image/back.png" width="20px" />
-        </div>
-        <div class="fs-30 fw-700">登录</div>
+    <div class="login-box">
+        <h2 class="title">登录</h2>
         <div class="user-agreement">
             <span>注册登录即代表你已同意</span>
-            <span class="c-ff" @click="toPage('agreement')">《用户协议》</span
-            ><span class="c-ff" @click="toPage('privacy')">《隐私协议》</span>
+            <span class="agreement-text" @click="toPage('/agreement')"
+                >《用户协议》</span
+            ><span class="agreement-text" @click="toPage('/privacy')"
+                >《隐私协议》</span
+            >
         </div>
-        <div class="fx align-items input-mobile">
-            <div class="fx">
-                <div>+86</div>
-                <div class="triangle"></div>
-            </div>
-            <div class="width-100">
-                <input
-                    type="text"
+        <div class="close-icon" @click="$router.back()">
+            <img src="../../assets/image/login/close-icon.png" alt="" />
+        </div>
+        <div class="user-form">
+            <van-form @submit="onSubmit">
+                <van-field
                     v-model="phone"
-                    class="width-100"
-                    placeholder="输入手机号码"
+                    name="phone"
+                    label="+86"
+                    placeholder="请输入手机号"
+                    :rules="[{ required: true, message: '请输入手机号' }]"
                 />
-            </div>
-        </div>
-        <div class="fx justify-between input-mobile">
-            <div class="width-100">
-                <input
+                <van-field
+                    v-model="password"
                     type="password"
-                    v-if="isEye === 1"
-                    class="width-100"
-                    v-model="password"
-                    placeholder="输入6-24位登录密码"
+                    name="password"
+                    label="密码"
+                    placeholder="密码"
+                    :rules="[{ required: true, message: '请输入密码' }]"
                 />
-                <input
-                    type="text"
-                    v-if="isEye === 2"
-                    class="width-100"
-                    v-model="password"
-                    placeholder="输入6-24位登录密码"
-                />
-            </div>
-            <div class="fx align-items">
-                <img
-                    @click="clear()"
-                    src="../../assets/image/input-close.png"
-                    width="25px"
-                />
-                <img
-                    class="ml-20"
-                    v-if="isEye === 1"
-                    src="../../assets/image/pwd-eye.png"
-                    @click="checkEye"
-                    width="20px"
-                />
-                <img
-                    class="ml-20"
-                    v-if="isEye === 2"
-                    src="../../assets/image/pwd-eye-active.png"
-                    @click="checkEye"
-                    width="20px"
-                />
-            </div>
+                <div class="sub-btn">
+                    <van-button block type="primary" native-type="submit"
+                        >确定</van-button
+                    >
+                </div>
+            </van-form>
         </div>
-        <div
-            class="submit"
-            :class="phone !== '' && password !== '' ? 'active' : ''"
-            @click="loginH5"
-        >
-            登录
-        </div>
-        <div class="fx justify-between">
-            <div @click="toPage('password')">忘记密码</div>
-            <div @click="toPage('register')">快速注册</div>
-        </div>
+        <div class="user-register" @click="toPage('/register')">快速注册</div>
     </div>
 </template>
 
 <script>
 import Cookie from '../../api/cookie.js';
 export default {
-    name: 'index',
+    name: 'login',
     data() {
         return {
-            isEye: 1,
             password: '',
             phone: '',
         };
     },
+    components: {},
+    watch: {},
+    mounted() {},
     methods: {
-        goBack() {
-            this.$router.go(-1);
-        },
-        toPage(name) {
-            this.$router.push({ name: name });
-        },
-        clear() {
-            this.password = '';
-        },
-        checkEye() {
-            if (this.isEye === 1) {
-                this.isEye = 2;
-            } else {
-                this.isEye = 1;
-            }
-        },
-        loginH5() {
-            let param = {
-                password: this.password,
-                phone: this.phone,
-            };
-            this.$axios('post', '/user/loginByPc', param).then((res) => {
+        onSubmit(values) {
+            console.log('submit', values);
+            this.$axios('post', '/user/loginByPc', values).then((res) => {
                 if (res.code === 200) {
                     Cookie.set('token', res.data);
-                    // sessionStorage.setItem('token', res.data)
-                    // Cookie.set('token', res.data, '/', 'hszhibo.live')
-                    this.$router.push({ name: 'home' });
+                    this.toPage('/');
                 }
             });
+        },
+        toPage(path) {
+            this.$router.push(path);
         },
     },
 };
 </script>
 
-<style scoped>
-.login {
-    padding: 10px 25px;
-}
-.fs-30 {
-    font-size: 28px;
-    margin-top: 50px;
-    /*margin-left: 10px;*/
-}
-.user-agreement {
-    font-size: 12px;
-    color: #8f8f8f;
-    /*margin-left: 10px;*/
-}
-.c-ff {
-    color: #f8413d;
-}
-.input-mobile {
-    line-height: 50px;
-    border-bottom: 1px solid #ddd;
-    margin-top: 10px;
-}
-.triangle {
-    border: 5px solid transparent;
-    border-top-color: #f8413d;
-    transform: translateY(49%);
-    margin-left: 5px;
-    margin-right: 10px;
-}
-.submit {
+<style scoped lang="scss">
+.login-box {
     width: 100%;
-    line-height: 60px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    border-radius: 50px;
-    border: none;
-    font-size: 18px;
-    font-weight: 600;
-    text-align: center;
-    color: #bcc7d4;
-    background-color: #f2f4f7;
-}
-.active {
-    color: white;
-    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
-}
-.width-100 {
-    width: 100%;
+    min-height: 100%;
+    @include bgurl('../../assets/image/login/login-bg.png');
+    background-attachment: fixed;
+    position: relative;
+    padding: 22px;
+    .close-icon {
+        position: absolute;
+        top: 22px;
+        left: 22px;
+        z-index: 9;
+        width: 16px;
+        height: 16px;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    .title {
+        margin-top: 64px;
+        color: #333333;
+        font-size: 20px;
+    }
+    .user-form {
+        margin-top: 50px;
+        ::v-deep .van-cell {
+            background: none;
+            padding: 16px 0;
+        }
+        ::v-deep .van-button--primary {
+            background: linear-gradient(
+                90deg,
+                #ff8d86 0%,
+                #f8413d 100%
+            ) !important;
+            border: none;
+        }
+        .sub-btn {
+            margin-top: 50px;
+        }
+    }
+    .user-agreement {
+        width: 100%;
+        margin: 20px 0;
+        span {
+            color: #aeaeae;
+            font-size: 14px;
+        }
+        .agreement-text {
+            color: $primary-color;
+            display: inline-block;
+        }
+    }
+    .user-register {
+        width: 100%;
+        @include flexEndCenter();
+        margin-top: 40px;
+        color: $primary-color;
+        font-size: 14px;
+        text-decoration: underline;
+    }
 }
 </style>
