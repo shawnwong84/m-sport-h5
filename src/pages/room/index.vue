@@ -1490,7 +1490,7 @@ export default {
 .prism-player {
     /*margin-top: -100px!important;*/
     z-index: 2;
-    background-image: url('../../assets/image/logo1.png');
+    background-image: url('../../assets/image/noImg.png');
     background-size: cover;
     /*background-size: 100% auto;*/
     background-position: center center;
@@ -1589,7 +1589,7 @@ export default {
 .prism-ErrorMessage {
     /*width: 100%;*/
     /*height: 100%;*/
-    background-image: url('../../assets/image/logo1.png') !important;
+    background-image: url('../../assets/image/noImg.png') !important;
     background-size: 100% 100% !important;
 }
 video {

@@ -6,7 +6,7 @@
 -->
 <template>
     <div class="attention-box">
-        <div class="attention-list">
+        <div class="attention-list" v-if="userAnchorList.length>0">
             <div
                 class="attention-item"
                 v-for="item in userAnchorList"

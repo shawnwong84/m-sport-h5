@@ -79,20 +79,28 @@
         <div class="match-common-box">
             <h2 class="title">正在热播</h2>
             <div class="match-list">
-                <matchItem
-                    v-for="item in [...hotList].splice(0, 6)"
-                    :key="item.roomId"
-                    :item="item"
-                ></matchItem>
+                <van-list
+                    v-model="loading"
+                    :finished="finished"
+                    finished-text="没有更多了"
+                    @load="getHotList"
+                    class="match-list"
+                >
+                    <matchItem
+                        v-for="item in hotList"
+                        :key="item.roomId"
+                        :item="item"
+                    ></matchItem>
+                </van-list>
             </div>
-            <div
+            <!-- <div
                 class="check-more"
                 @click="changeIndex({ component: 'allBall', id: 2 })"
             >
                 查看更多
-            </div>
+            </div> -->
         </div>
-        <div class="rem-anchor-box">
+        <!-- <div class="rem-anchor-box">
             <h2 class="title">推荐专家</h2>
             <div class="anchor-list">
                 <div
@@ -113,8 +121,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="match-common-box">
+        </div> -->
+        <!-- <div class="match-common-box">
             <h2 class="title">足球直播</h2>
             <div class="match-list">
                 <matchItem
@@ -145,7 +153,7 @@
             >
                 查看更多
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -165,6 +173,9 @@ export default {
             hotExpertList: [],
             footerBallList: [],
             basketBallList: [],
+            loading: false,
+            finished: false,
+            pageNum: 1,
         };
     },
     components: {
@@ -175,11 +186,10 @@ export default {
     mounted() {
         this.getBannerList();
         this.getMatch();
-        this.getHotList();
         this.getNotice();
-        this.getHotExpert();
-        this.getFooterBall();
-        this.getBasketBall();
+        // this.getHotExpert();
+        // this.getFooterBall();
+        // this.getBasketBall();
     },
     methods: {
         getBannerList() {
@@ -230,13 +240,18 @@ export default {
             });
         },
         getHotList() {
+            this.loading = true;
             let param = {
-                pageNum: 1,
-                pageSize: 30,
+                pageNum: this.pageNum++,
+                pageSize: 10,
             };
             this.$axios('post', '/live/getHotLiveList', param).then((res) => {
+                this.loading = false;
                 if (res.code === 200) {
-                    this.hotList = res.data.dataList;
+                    this.hotList = this.hotList.concat(res.data.dataList);
+                }
+                if (res.data.dataList.length === 0) {
+                    this.finished = true;
                 }
             });
         },
@@ -535,6 +550,12 @@ export default {
     .match-common-box {
         width: 100%;
         margin-bottom: 12px;
+        ::v-deep .van-list__finished-text {
+            width: 100%;
+        }
+        ::v-deep .van-list__loading {
+            width: 100%;
+        }
 
         .match-list {
             width: 100%;
