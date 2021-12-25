@@ -160,6 +160,10 @@ export default {
         @include flexCenter();
         height: 40px;
         background-color: #fff;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 9;
         .match-item {
             color: #666666;
             font-size: 16px;
@@ -197,8 +201,9 @@ export default {
                 height: 30px;
                 padding: 0 16px;
                 position: sticky;
-                top: 0;
+                top: 40px;
                 left: 0;
+                z-index: 9;
                 background: #f7f7f7;
                 line-height: 30px;
             }
