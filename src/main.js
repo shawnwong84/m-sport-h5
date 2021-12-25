@@ -12,9 +12,9 @@ import ax from './api/index';
 import Utils from './assets/js/utils.js';
 import { DatetimePicker, Popup, Picker, Range } from 'mint-ui';
 import moment from 'moment';
-import { Toast, List, Form, Field,Button } from 'vant';
+import { Toast, List, Form, Field, Button, Tag } from 'vant';
 import 'vant/lib/index.css';
-Vue.use(Toast).use(List).use(Field).use(Form).use(Button);
+Vue.use(Toast).use(List).use(Field).use(Form).use(Button).use(Tag);
 
 import VueLazyload from 'vue-lazyload';
 

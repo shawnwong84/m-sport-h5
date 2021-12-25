@@ -56,9 +56,9 @@ const router = new Router({
                     },
                 },
                 {
-                    path: '/new',
-                    name: 'new',
-                    component: () => import('@/pages/new/index.vue'),
+                    path: '/news',
+                    name: 'news',
+                    component: () => import('@/pages/news/index.vue'),
                     meta: {
                         footShow: true,
                         requiresAuth: false,

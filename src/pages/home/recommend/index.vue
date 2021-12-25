@@ -189,21 +189,23 @@ export default {
             this.$axios('post', '/live/getBannerList', param).then((res) => {
                 if (res.code === 200) {
                     this.bannerList = res.data;
-                    new Swiper('.recommend-container', {
-                        speed: 300,
-                        loop: true,
-                        paginationClickable: true,
-                        observer: true, //修改swiper自己或子元素时，自动初始化swiper
-                        observeParents: true, //修改swiper的父元素时，自动初始化swiper
-                        autoplay: {
-                            delay: 3000,
-                            stopOnLastSlide: false,
-                            disableOnInteraction: false,
-                        }, // 可选选项，自动滑动
-                        pagination: {
-                            el: '.swiper-pagination',
-                            bulletActiveClass: 'recommend-bullet-active',
-                        },
+                    this.$nextTick(() => {
+                        new Swiper('.recommend-container', {
+                            speed: 300,
+                            loop: true,
+                            paginationClickable: true,
+                            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+                            observeParents: true, //修改swiper的父元素时，自动初始化swiper
+                            autoplay: {
+                                delay: 3000,
+                                stopOnLastSlide: false,
+                                disableOnInteraction: false,
+                            }, // 可选选项，自动滑动
+                            pagination: {
+                                el: '.swiper-pagination',
+                                bulletActiveClass: 'recommend-bullet-active',
+                            },
+                        });
                     });
                 }
             });

@@ -43,7 +43,7 @@ export default {
                 {
                     id: 2,
                     name: '咨询',
-                    path: '/new',
+                    path: '/news',
                     icon: require('../../assets/image/header/news-icon.png'),
                     activeIcon: require('../../assets/image/header/live-active-icon.png'),
                 },
