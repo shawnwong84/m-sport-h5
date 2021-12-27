@@ -1,5 +1,6 @@
 <template>
     <div class="main">
+        <DownApp></DownApp>
         <router-view class="content"></router-view>
         <Mheader></Mheader>
     </div>
@@ -7,9 +8,10 @@
 
 <script>
 import Mheader from '../components/header';
+import DownApp from '../components/down';
 export default {
     name: 'index',
-    components: { Mheader },
+    components: { Mheader, DownApp },
 };
 </script>
 
@@ -18,6 +20,7 @@ export default {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-top: 57px;
 }
 .content {
     flex: 1;

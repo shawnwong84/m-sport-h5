@@ -161,7 +161,7 @@ export default {
         height: 40px;
         background-color: #fff;
         position: sticky;
-        top: 0;
+        top: 57px;
         left: 0;
         z-index: 9;
         .match-item {
@@ -201,7 +201,7 @@ export default {
                 height: 30px;
                 padding: 0 16px;
                 position: sticky;
-                top: 40px;
+                top: 97px;
                 left: 0;
                 z-index: 9;
                 background: #f7f7f7;

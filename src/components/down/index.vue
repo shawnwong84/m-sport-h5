@@ -1,60 +1,102 @@
 <template>
-    <div class="down-wrap">
-        <div class="fx align-items">
-            <div>
-                <img
-                    src="../../assets/image/fade-logo1.png"
-                    width="35px"
-                    @click="toPage('home')"
-                />
-            </div>
-            <div class="ml-10" style="margin-top: -5px">
-                <div class="c-fff fs-18 fw-700">下载xxAPP</div>
-                <div class="fs-12 fw-700 c-fff">畅享高清体育直播</div>
-            </div>
+    <div class="down-box">
+        <div class="down-logo">
+            <img src="../../assets/image/down/logo-icon.png" alt="" />
         </div>
-        <div class="fx">
-            <!--      <div class="btn-add-screen">添加到主屏幕</div>-->
-            <div class="ml-10" @click="down">
-                <img src="../../assets/image/down-btn-1.png" width="76px" />
-            </div>
+        <div class="down-title">
+            <span class="name">M体育</span>
+            <span class="des">顶级体育赛事直播APP</span>
+        </div>
+        <div class="down-btn" @click="downApp">
+            <img src="../../assets/image/down/down-top-btn.png" alt="" />
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { judgeClient } from '../../utils/tools';
 export default {
-    name: 'index',
-    methods: {
-        down() {
-            window.open('http://dl.hszhibo.live');
+    name: 'down',
+    data() {
+        return {
+            iosUrl: '',
+            androidUrl: '',
+        };
+    },
+    components: {},
+    watch: {
+        getDownAddress(val) {
+            this.iosUrl = val.ios;
+            this.androidUrl = val.android;
         },
-        toPage(name) {
-            this.$router.push({ name: name });
+    },
+    computed: {
+        ...mapGetters({
+            getDownAddress: 'getDownAddress',
+        }),
+    },
+    mounted() {},
+    methods: {
+        downApp() {
+            if (this.$route.path === '/down') {
+                if (judgeClient() == 'IOS') {
+                    window.location.href = this.iosUrl;
+                } else if (judgeClient() == 'Android') {
+                    window.location.href = this.androidUrl;
+                }
+            } else {
+                this.$router.push('/down');
+            }
         },
     },
 };
 </script>
 
-<style scoped>
-.down-wrap {
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 20px 4px 20px;
-    /*transform: translateX(-50%);*/
-}
-.btn-add-screen {
-    color: #fff;
-    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
-    line-height: 30px;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 6px;
-    padding: 0px 8px;
-}
-.c-fff {
-    color: #ffffff;
+<style scoped lang="scss">
+.down-box {
+    width: 100%;
+    height: 57px;
+    @include bgurl('../../assets/image/down/down-top-bg.png');
+    @include flexBetweenCenter();
+    padding: 0 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    .down-logo {
+        width: 51px;
+        height: 51px;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    .down-title {
+        flex: 1;
+        @include flexColumnStart2();
+        margin-left: 5px;
+        .name {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+        .des {
+            font-size: 12px;
+
+            color: #ffffff;
+        }
+    }
+    .down-btn {
+        width: 98px;
+        height: 33px;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
 }
 </style>
