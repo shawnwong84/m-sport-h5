@@ -10,11 +10,31 @@ import 'swiper/css/swiper.min.css';
 import 'babel-polyfill';
 import ax from './api/index';
 import Utils from './assets/js/utils.js';
-import { DatetimePicker, Popup, Picker, Range } from 'mint-ui';
+import { Popup, Range } from 'mint-ui';
 import moment from 'moment';
-import { Toast, List, Form, Field, Button, Tag } from 'vant';
+import {
+    Toast,
+    List,
+    Form,
+    Field,
+    Button,
+    Tag,
+    NavBar,
+    Uploader,
+    Picker,
+    DatetimePicker,
+} from 'vant';
 import 'vant/lib/index.css';
-Vue.use(Toast).use(List).use(Field).use(Form).use(Button).use(Tag);
+Vue.use(Toast)
+    .use(List)
+    .use(Field)
+    .use(Form)
+    .use(Button)
+    .use(Tag)
+    .use(NavBar)
+    .use(Uploader)
+    .use(Picker)
+    .use(DatetimePicker);
 
 import VueLazyload from 'vue-lazyload';
 
@@ -53,8 +73,7 @@ var optionsIm = {
         console.log(err);
     },
 };
-Vue.component(DatetimePicker.name, DatetimePicker);
-Vue.component(Picker.name, Picker);
+
 Vue.component(Popup.name, Popup);
 Vue.component(Range.name, Range);
 Vue.prototype.$WebIM = WebIM;

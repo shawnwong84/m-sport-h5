@@ -1,34 +1,49 @@
 <!DOCTYPE html>
 <html lang="">
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta
-			name="viewport"
-			content=" width=device-width, initial-scale=1.0,shrink-to-fit=no maximum-scale=1.0, minimum-scale=1.0,user-scalable=no, viewport-fit=cover"
-		/>
-		<link rel="icon" href="<%= BASE_URL %>favicon.png" />
-		<title><%= htmlWebpackPlugin.options.title %></title>
-		<link
-			rel="stylesheet"
-			href="https://g.alicdn.com/de/prismplayer/2.9.3/skins/default/aliplayer-min.css"
-		/>
-	</head>
-	<body>
-		<noscript>
-			<strong
-				>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't
-				work properly without JavaScript enabled. Please enable it to
-				continue.</strong
-			>
-		</noscript>
-		<div id="app"></div>
-		<!-- built files will be auto injected -->
-	</body>
-	
-	<script
-		type="text/javascript"
-		charset="utf-8"
-		src="https://g.alicdn.com/de/prismplayer/2.9.3/aliplayer-min.js"
-	></script>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content=" width=device-width, initial-scale=1.0,shrink-to-fit=no maximum-scale=1.0, minimum-scale=1.0,user-scalable=no, viewport-fit=cover"
+        />
+        <link rel="icon" href="<%= BASE_URL %>favicon.png" />
+        <title><%= htmlWebpackPlugin.options.title %></title>
+        <link
+            rel="stylesheet"
+            href="https://g.alicdn.com/de/prismplayer/2.9.3/skins/default/aliplayer-min.css"
+        />
+    </head>
+    <body>
+        <noscript>
+            <strong
+                >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't
+                work properly without JavaScript enabled. Please enable it to
+                continue.</strong
+            >
+        </noscript>
+        <div id="app"></div>
+        <!-- built files will be auto injected -->
+    </body>
+    <script>
+        function isMobile() {
+            if (
+                window.navigator.userAgent.match(
+                    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i,
+                )
+            ) {
+                return true; // 移动端
+            } else {
+                return false; // PC端
+            }
+        }
+        if (!isMobile()) {
+            window.location.href = '//www.mzhibo.cc/';
+        } 
+    </script>
+    <script
+        type="text/javascript"
+        charset="utf-8"
+        src="https://g.alicdn.com/de/prismplayer/2.9.3/aliplayer-min.js"
+    ></script>
 </html>

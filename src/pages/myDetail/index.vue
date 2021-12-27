@@ -1,148 +1,159 @@
 <template>
-    <div>
-        <v-down></v-down>
-        <div class="fx align-items justify-between mt-10 border-bottom top">
-            <div @click="$utils.goBack">
-                <img src="../../assets/image/back.png" width="20px" />
-            </div>
-            <div class="fs-18 fw-700">个人资料</div>
-            <div class="sumbit" @click="updateUserInfo">保存</div>
-        </div>
-        <div class="file" v-if="avatarUrl === ''">
-            <input accept="image/*" type="file" @change="btnUploadFile" />
-        </div>
-        <div class="fx justify-between align-items nav-info">
-            <div class="fs-18">头像</div>
-            <div class="fx align-items">
-                <div v-if="avatarUrl === ''">
-                    <img :src="infoData.avatarUrl" class="head-img" />
-                </div>
-                <div v-if="avatarUrl !== ''">
+    <div class="my-detail-box">
+        <van-nav-bar
+            title="个人资料"
+            right-text="保存"
+            left-arrow
+            @click-left="onClickLeft"
+            @click-right="saveInfo"
+        />
+        <div class="user-info">
+            <div class="user-row">
+                <div class="left">头像</div>
+                <div class="right">
+                    <div class="avatar-file">
+                        <input
+                            accept="image/*"
+                            type="file"
+                            @change="btnUploadFile"
+                        />
+                    </div>
+                    <div class="avatar-img">
+                        <img :src="infoData.avatarUrl" alt="" />
+                    </div>
+
                     <img
-                        :src="
-                            'https://www.ridgidchina.net.cn/live/' + avatarUrl
-                        "
-                        class="head-img"
+                        src="../../assets/image/my/right-icon.png"
+                        alt=""
+                        class="right-icon"
                     />
                 </div>
-                <div class="ml-10">
-                    <img src="../../assets/image/jiankuohao.png" width="10px" />
-                </div>
             </div>
-        </div>
-        <div class="fx justify-between align-items nav-info">
-            <div class="fs-18">昵称</div>
-            <div class="fx align-items">
-                <div>
-                    <input
-                        type="text"
-                        v-model="infoData.userName"
-                        class="userName-input"
+            <div class="user-row">
+                <div class="left">昵称</div>
+                <div class="right">
+                    <div class="user-name">
+                        <input
+                            type="text"
+                            v-model="infoData.userName"
+                            maxlength="20"
+                        />
+                    </div>
+                    <img
+                        src="../../assets/image/my/right-icon.png"
+                        alt=""
+                        class="right-icon"
                     />
                 </div>
-                <div class="ml-10">
-                    <img src="../../assets/image/jiankuohao.png" width="10px" />
+            </div>
+            <div class="user-row" @click="showSexPicker">
+                <div class="left">性别</div>
+                <div class="right">
+                    <div class="user-sex">
+                        {{ sexVaule[infoData.sex] }}
+                    </div>
+                    <img
+                        src="../../assets/image/my/right-icon.png"
+                        alt=""
+                        class="right-icon"
+                    />
+                </div>
+            </div>
+            <div class="user-row" @click="showBirthdayPicker">
+                <div class="left">生日</div>
+                <div class="right">
+                    <div class="user-birthday">{{ infoData.birthday }}</div>
+                    <img
+                        src="../../assets/image/my/right-icon.png"
+                        alt=""
+                        class="right-icon"
+                    />
                 </div>
             </div>
         </div>
-        <div class="fx justify-between align-items nav-info" @click="checkSex">
-            <div class="fs-18">性别</div>
-            <div class="fx align-items">
-                <div>
-                    <span v-if="infoData.sex === 0">保密</span>
-                    <span v-if="infoData.sex === 1">男</span>
-                    <span v-if="infoData.sex === 2">女</span>
-                </div>
-                <div class="ml-10">
-                    <img src="../../assets/image/jiankuohao.png" width="10px" />
-                </div>
-            </div>
+        <div class="sex-picker" v-if="showSex">
+            <van-picker
+                title="性别"
+                show-toolbar
+                :columns="columns"
+                @confirm="onConfirmSex"
+                @cancel="showSexPicker"
+                :default-index="infoData.sex"
+            />
         </div>
-        <div class="fx justify-between align-items nav-info" @click="checkDate">
-            <div class="fs-18">生日</div>
-            <div class="fx align-items">
-                <div>{{ infoData.birthday }}</div>
-                <div class="ml-10">
-                    <img src="../../assets/image/jiankuohao.png" width="10px" />
-                </div>
-            </div>
-        </div>
-        <mt-popup v-model="popupVisible" position="bottom" style="width: 100%">
-            <mt-picker
-                class="picker-popup"
-                :slots="slots"
-                @change="onValuesChange"
-            ></mt-picker>
-        </mt-popup>
-        <mt-datetime-picker
-            v-model="pickerVisible"
-            type="date"
-            ref="picker"
-            year-format="{value} 年"
-            month-format="{value} 月"
-            date-format="{value} 日"
-            @confirm="handleConfirm"
-        >
-        </mt-datetime-picker>
-        <div class="bottom">
-            <div class="login-out-btn" @click="loginOut">退出登录</div>
+        <div class="birthday-picker" v-if="showBirthday">
+            <van-datetime-picker
+                v-model="currentDate"
+                type="date"
+                title="选择年月日"
+                :min-date="minDate"
+                :max-date="maxDate"
+                @cancel="showBirthdayPicker"
+                @confirm="onConfirmBirthday"
+            />
         </div>
     </div>
 </template>
 
 <script>
-import down from '../../components/down/index';
-import Cookie from '../../api/cookie.js';
+import moment from 'moment';
 export default {
     name: 'index',
     data() {
         return {
-            infoData: [],
-            pickerVisible: '',
-            popupVisible: false,
+            infoData: {},
             avatarUrl: '',
-            slots: [
-                {
-                    flex: 1,
-                    values: ['保密', '男', '女'],
-                    className: 'slot1',
-                    textAlign: 'center',
-                },
-            ],
+            columns: ['保密', '男', '女'],
+            showSex: false,
+            sexVaule: {
+                0: '保密',
+                1: '男',
+                2: '女',
+            },
+            currentDate: new Date(),
+            minDate: new Date(1900, 0, 1),
+            maxDate: new Date(),
+            showBirthday: false,
         };
     },
-    components: { 'v-down': down },
+    components: {},
+    watch: {},
     mounted() {
         this.getInfo();
     },
     methods: {
-        onValuesChange(picker, values) {
-            if (values[0] === '保密') {
-                this.infoData.sex = 0;
-            }
-            if (values[0] === '男') {
-                this.infoData.sex = 1;
-            }
-            if (values[0] === '女') {
-                this.infoData.sex = 2;
-            }
+        onClickLeft() {
+            this.$router.back();
         },
-        checkSex() {
-            this.popupVisible = true;
+        //修改我的资料
+        saveInfo() {
+            let param = {
+                birthday: this.infoData.birthday,
+                description: '',
+                nickName: this.infoData.userName,
+                sex: this.infoData.sex,
+            };
+            this.$axios('post', '/user/editUserInfo', param).then((res) => {
+                if (res.code === 200) {
+                    this.getInfo();
+                    this.$toast({
+                        message: '保存成功',
+                    });
+                    this.$router.back();
+                }
+            });
         },
-        checkDate() {
-            this.$refs.picker.open();
-        },
-        handleConfirm(d) {
-            var datetime =
-                d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-            this.infoData.birthday = datetime;
-            console.log(datetime);
+        getInfo() {
+            this.$axios('post', '/user/userInfo').then((res) => {
+                if (res.code === 200) {
+                    this.infoData = res.data;
+                }
+            });
         },
         // 上传图片
         btnUploadFile(e) {
-            var imgFile = e.target.files[0]; // 获取图片文件
-            var formData = new FormData(); // 创建form对象
+            let imgFile = e.target.files[0]; // 获取图片文件
+            let formData = new FormData(); // 创建form对象
             formData.append('file', imgFile); // 通过append向form对象添加数据
             formData.append('other', 'other'); // 如果还需要传替他参数的话
             this.$axios('post', '/file/fileUpload', formData).then((res) => {
@@ -161,94 +172,111 @@ export default {
                 }
             });
         },
-        getInfo() {
-            this.$axios('post', '/user/userInfo').then((res) => {
-                if (res.code === 200) {
-                    this.infoData = res.data;
-                }
-            });
+        onConfirmSex(value, index) {
+            this.infoData.sex = index;
+            this.showSexPicker();
         },
-        // 修改我的资料
-        updateUserInfo() {
-            let param = {
-                birthday: this.infoData.birthday,
-                description: '',
-                nickName: this.infoData.userName,
-                sex: this.infoData.sex,
-            };
-            this.$axios('post', '/user/editUserInfo', param).then((res) => {
-                if (res.code === 200) {
-                    this.getInfo();
-                    this.$router.push({ name: 'my' });
-                }
-            });
+
+        showSexPicker() {
+            this.showSex = !this.showSex;
         },
-        loginOut() {
-            this.$axios('post', '/user/loginOut').then((res) => {
-                if (res.code === 200) {
-                }
-            });
-            Cookie.remove('token');
-            this.$router.push({ name: 'home' });
+        showBirthdayPicker() {
+            this.showBirthday = !this.showBirthday;
+        },
+        onConfirmBirthday(value, index) {
+            this.infoData.birthday = moment(value).format('YYYY-MM-DD');
+            this.showBirthdayPicker();
         },
     },
 };
 </script>
 
-<style scoped>
-.top {
-    padding-right: 10px;
-    padding-left: 10px;
-    box-sizing: border-box;
-}
-.head-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-.nav-info {
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-}
-.border-bottom {
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 15px;
-}
-.bottom {
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    display: flex;
-    justify-content: center;
-    padding: 15px;
-}
-.login-out-btn {
-    width: 100%;
-    line-height: 50px;
-    background: red;
-    color: white;
-    text-align: center;
-    border-radius: 50px;
-}
-.file input {
-    opacity: 0;
-    position: absolute;
-    width: 100%;
-    height: 80px;
-    border: 1px solid red;
-}
-.userName-input {
-    line-height: 30px;
-    width: 100%;
-    text-align: right;
-}
-.picker-popup {
-    width: 100%;
-}
-.sumbit {
-    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
-    color: white;
-    border-radius: 5px;
-    padding: 5px 10px;
+<style scoped lang="scss">
+.my-detail-box {
+    ::v-deep .van-nav-bar__text {
+        color: $primary-color;
+    }
+    ::v-deep .van-icon {
+        color: #333;
+    }
+    .user-info {
+        width: 100%;
+
+        .user-row {
+            width: 100%;
+            padding: 14px;
+            @include flexBetweenCenter();
+            background: #fff;
+            &:not(:last-child) {
+                border-bottom: 1px solid #f1f1f1;
+            }
+            .left {
+                font-size: 14px;
+                color: #282828;
+            }
+            .right {
+                @include flexCenter();
+                position: relative;
+                .avatar-file {
+                    width: 50px;
+                    height: 50px;
+                    position: absolute;
+                    z-index: 9;
+                    left: 0;
+                    top: 0;
+                    input {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        opacity: 0;
+                    }
+                }
+                .avatar-img {
+                    width: 50px;
+                    height: 50px;
+                    margin-right: 5px;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: 50%;
+                    }
+                }
+                .user-name {
+                    width: 150px;
+                    height: 100%;
+                    margin-right: 10px;
+
+                    input {
+                        width: 100%;
+                        height: 100%;
+                        text-align: right;
+                        border: none;
+                        outline: none;
+                        color: #282828;
+                        font-size: 14px;
+                    }
+                }
+                .user-sex,
+                .user-birthday {
+                    margin-right: 10px;
+                    color: #282828;
+                    font-size: 14px;
+                }
+                .right-icon {
+                    width: 12px;
+                    height: 12px;
+                }
+            }
+        }
+    }
+    .sex-picker,
+    .birthday-picker {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9;
+    }
 }
 </style>
