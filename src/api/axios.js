@@ -3,7 +3,8 @@ import querystring from 'querystring';
 
 const { VUE_APP_API_URL, NODE_ENV } = process.env;
 const ax = axios.create({
-    baseURL: NODE_ENV === 'development' ? '/' : VUE_APP_API_URL,
+    // baseURL: NODE_ENV === 'development' ? '/' : VUE_APP_API_URL,
+    baseURL: '/',
     timeout: 10000,
 });
 
