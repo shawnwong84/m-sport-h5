@@ -15,7 +15,7 @@
                 <div class="login-btn" @click="userlogin">登录/注册</div>
                 <div class="login-des">登陆后获取更多精彩内容~</div>
             </div>
-            <div class="login-info" v-if="token">
+            <div class="login-info" v-if="token" @click="toPage('/myDetail')">
                 <div class="name">{{ infoData.userName }}</div>
                 <div class="level">
                     等级：<span>{{ infoData.level }}</span>
@@ -36,7 +36,12 @@
             </div>
         </div>
         <div class="my-nav">
-            <div class="nav-item" v-for="item in navList" :key="item.id">
+            <div
+                class="nav-item"
+                v-for="item in navList"
+                :key="item.id"
+                @click="toPage(item.path)"
+            >
                 <div class="left">
                     <img :src="item.icon" alt="" />
                     <span>{{ item.name }}</span>
@@ -58,45 +63,21 @@ export default {
             navList: [
                 {
                     id: 0,
-                    name: '我的关注',
-                    path: '',
+                    name: '消息中心',
+                    path: '/message',
                     icon: require('../../assets/image/my/follow-icon.png'),
                 },
                 {
                     id: 1,
-                    name: '我的等级',
-                    path: '',
-                    icon: require('../../assets/image/my/level-icon.png'),
+                    name: '意见反馈',
+                    path: '/feedbackList',
+                    icon: require('../../assets/image/my/idea-icon.png'),
                 },
                 {
                     id: 2,
-                    name: '成为主播',
+                    name: '设置',
                     path: '',
-                    icon: require('../../assets/image/my/anchor-icon.png'),
-                },
-                {
-                    id: 3,
-                    name: '排行榜',
-                    path: '',
-                    icon: require('../../assets/image/my/rank-icon.png'),
-                },
-                {
-                    id: 4,
-                    name: '在线客服',
-                    path: '',
-                    icon: require('../../assets/image/my/service-icon.png'),
-                },
-                {
-                    id: 5,
-                    name: '分析APP',
-                    path: '',
-                    icon: require('../../assets/image/my/share-icon.png'),
-                },
-                {
-                    id: 6,
-                    name: '意见反馈',
-                    path: '',
-                    icon: require('../../assets/image/my/idea-icon.png'),
+                    icon: require('../../assets/image/my/setting-icon.png'),
                 },
             ],
             token: Cookie.get('token'),
@@ -120,6 +101,9 @@ export default {
                     this.infoData = res.data;
                 }
             });
+        },
+        toPage(path) {
+            this.$router.push(path);
         },
     },
 };

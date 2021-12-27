@@ -119,7 +119,7 @@ export default {
 .down-app {
     width: 100%;
     padding-top: 57px;
-    padding-bottom: 50px;
+    padding-bottom: 30px;
     min-height: 100vh;
     @include bgurl('../../assets/image/down/down-app-bg.png');
 

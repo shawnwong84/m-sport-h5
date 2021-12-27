@@ -26,6 +26,7 @@
                 </div>
             </div>
         </div>
+        <noData v-else></noData>
         <div class="match-common-box">
             <h2 class="title">正在热播</h2>
             <div class="match-list">
@@ -41,6 +42,7 @@
 
 <script>
 import matchItem from '../../components/matchItem';
+import noData from '../../components/noData'
 export default {
     name: 'attention',
     data() {
@@ -51,6 +53,7 @@ export default {
     },
     components: {
         matchItem,
+        noData
     },
     watch: {},
     mounted() {

@@ -59,7 +59,14 @@ export default {
             this.$axios('post', '/user/loginByPc', values).then((res) => {
                 if (res.code === 200) {
                     Cookie.set('token', res.data);
+                    this.$toast({
+                        message: '登录成功',
+                    });
                     this.toPage('/');
+                } else {
+                    this.$toast({
+                        message: res.msg,
+                    });
                 }
             });
         },

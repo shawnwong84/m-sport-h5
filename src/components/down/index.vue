@@ -46,7 +46,10 @@ export default {
                     window.location.href = this.androidUrl;
                 }
             } else {
-                this.$router.push('/down');
+                let routeUrl = this.$router.resolve({
+                    path: '/down',
+                });
+                window.open(routeUrl.href, '_blank');
             }
         },
     },

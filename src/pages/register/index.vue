@@ -27,6 +27,7 @@
                     clearable
                     label="验证码"
                     placeholder="请输入验证码"
+                    name="smsCode"
                     :rules="[{ required: true, message: '请输入验证码' }]"
                 >
                     <template #button>
@@ -110,9 +111,14 @@ export default {
             let param = {
                 phone: this.phone,
             };
+
             this.$axios('post', '/user/sendSms', param).then((res) => {
                 if (res.code === 200) {
                     this.getCode();
+                } else {
+                    this.$toast({
+                        message: res.msg,
+                    });
                 }
             });
         },
@@ -121,13 +127,23 @@ export default {
             this.$axios('post', '/user/registerByPc', values).then((res) => {
                 if (res.code === 200) {
                     Cookie.set('token', res.data);
+                    this.$toast({
+                        message: '注册成功',
+                    });
                     this.toPage('/');
+                } else {
+                    this.$toast({
+                        message: res.msg,
+                    });
                 }
             });
         },
         toPage(path) {
             this.$router.push(path);
         },
+    },
+    destroyed() {
+        this.timer = null;
     },
 };
 </script>
