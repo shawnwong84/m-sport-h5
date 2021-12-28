@@ -180,7 +180,7 @@ const router = new Router({
             component: () => import('@/pages/feedbackList/index.vue'),
             meta: {
                 footShow: true,
-                requiresAuth: false,
+                requiresAuth: true,
             },
         },
         {
