@@ -29,6 +29,7 @@
                     placeholder="请输入验证码"
                     name="smsCode"
                     :rules="[{ required: true, message: '请输入验证码' }]"
+                    maxlength="8"
                 >
                     <template #button>
                         <div class="sms-btn" @click="sendSms">
@@ -48,7 +49,7 @@
                     type="password"
                     name="password"
                     label="密码"
-                    placeholder="密码"
+                    placeholder="请输入密码"
                     :rules="[{ required: true, message: '请输入密码' }]"
                 />
                 <div class="sub-btn">
@@ -63,6 +64,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Cookie from '../../api/cookie.js';
 export default {
     name: 'login',
@@ -84,6 +86,9 @@ export default {
     watch: {},
     mounted() {},
     methods: {
+        ...mapActions({
+            setUserInfo: 'setUserInfo',
+        }),
         // 获取验证码
         getCode() {
             // 验证码60秒倒计时
@@ -130,7 +135,10 @@ export default {
                     this.$toast({
                         message: '注册成功',
                     });
-                    this.toPage('/');
+                    this.getInfo();
+                    setTimeout(() => {
+                        this.toPage('/');
+                    }, 1000);
                 } else {
                     this.$toast({
                         message: res.msg,
@@ -140,6 +148,13 @@ export default {
         },
         toPage(path) {
             this.$router.push(path);
+        },
+        getInfo() {
+            this.$axios('post', '/user/userInfo').then((res) => {
+                if (res.code === 200) {
+                    this.setUserInfo(res.data);
+                }
+            });
         },
     },
     destroyed() {
@@ -179,14 +194,6 @@ export default {
         ::v-deep .van-cell {
             background: none;
             padding: 12px 0;
-        }
-        ::v-deep .van-button--primary {
-            background: linear-gradient(
-                90deg,
-                #ff8d86 0%,
-                #f8413d 100%
-            ) !important;
-            border: none;
         }
         .sub-btn {
             margin-top: 50px;

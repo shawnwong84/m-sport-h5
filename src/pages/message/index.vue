@@ -1,18 +1,12 @@
 <template>
     <div>
-        <v-down></v-down>
-        <div class="back" @click="$utils.goBack">
-            <img src="../../assets/image/back.png" width="20px" />
-        </div>
-        <div class="fx align-items justify-center mt-10">
-            <div class="fs-20 fw-700">消息中心</div>
-        </div>
+        <van-nav-bar title="消息中心" left-arrow @click-left="$router.back()" />
         <div class="feedback">
-            <div>
+            <div v-if="userFeedbackList.length !== 0">
                 <div
-                    v-if="userFeedbackList.length !== 0"
                     class="fx align-items feedback-list"
                     v-for="(item, index) in userFeedbackList"
+                    :key="index"
                 >
                     <div>
                         <img
@@ -24,22 +18,15 @@
                         {{ item.contactDetails }}
                     </div>
                 </div>
-                <div class="no-data" v-if="userFeedbackList.length === 0">
-                    <div>
-                        <img
-                            src="../../assets/image/nothing.png"
-                            width="240px"
-                        />
-                    </div>
-                    <div class="c-9D">暂无数据</div>
-                </div>
             </div>
+
+            <noData v-else></noData>
         </div>
     </div>
 </template>
 
 <script>
-import down from '../../components/down/index';
+import noData from '../../components/noData';
 export default {
     name: 'index',
     data() {
@@ -47,7 +34,7 @@ export default {
             userFeedbackList: [],
         };
     },
-    components: { 'v-down': down },
+    components: { noData },
     mounted() {
         this.getUserMsgList();
     },
@@ -68,7 +55,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+::v-deep .van-icon {
+    color: #333;
+}
 .no-data {
     margin-top: 30%;
     text-align: center;

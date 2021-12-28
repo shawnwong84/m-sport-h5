@@ -196,9 +196,7 @@ export default {
     ::v-deep .van-nav-bar__text {
         color: $primary-color;
     }
-    ::v-deep .van-icon {
-        color: #333;
-    }
+
     .user-info {
         width: 100%;
 

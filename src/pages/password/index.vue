@@ -1,150 +1,107 @@
 <template>
-    <div class="login">
-        <div style="margin-left: -10px" class="fx justify-between">
-            <div @click="goBack">
-                <img src="../../assets/image/back.png" width="20px" />
-            </div>
-            <div class="fs-18 fw-700 c-ff" @click="toPage">登录</div>
-        </div>
-        <div class="fs-30 fw-700">忘记密码</div>
-        <!--    <div class="user-agreement">-->
-        <!--      <span>注册登录即代表你已同意</span>-->
-        <!--      <span class="c-ff">《用户协议》</span>-->
-        <!--    </div>-->
-        <div class="fx align-items input-mobile">
-            <div class="fx">
-                <div>+86</div>
-                <!--        <div class="triangle"></div>-->
-            </div>
-            <div class="ml-10 width-100">
-                <input
-                    type="text"
-                    class="width-100"
+    <div class="password-box">
+        <van-nav-bar
+            :title="$route.query.type == 1 ? '忘记密码' : '修改密码'"
+            left-arrow
+            @click-left="$router.back()"
+        />
+        <div class="password-form">
+            <van-form @submit="forgotPassword">
+                <van-field
                     v-model="phone"
-                    placeholder="输入手机号码"
+                    name="phone"
+                    label="+86"
+                    placeholder="请输入手机号"
+                    :rules="[{ required: true, message: '请输入手机号' }]"
                 />
-            </div>
-        </div>
-        <div class="fx justify-between input-mobile">
-            <div class="width-100">
-                <input
-                    type="text"
-                    placeholder="输入验证码"
-                    class="width-100"
+                <van-field
                     v-model="smsCode"
-                />
-            </div>
-            <div class="btn-verify">
-                <input
-                    type="button"
-                    class="getNumber"
-                    v-model="codeMsg"
-                    @click="sendSms"
-                    :disabled="codeDisabled"
-                />
-            </div>
-        </div>
-        <div class="fx justify-between input-mobile">
-            <div class="width-100">
-                <input
+                    center
+                    clearable
+                    label="验证码"
+                    placeholder="请输入验证码"
+                    name="smsCode"
+                    :rules="[{ required: true, message: '请输入验证码' }]"
+                    maxlength="8"
+                >
+                    <template #button>
+                        <div class="sms-btn" @click="sendSms">
+                            {{ codeMsg }}
+                        </div>
+                    </template>
+                </van-field>
+                <van-field
+                    v-model="password"
                     type="password"
-                    class="width-100"
-                    v-if="isEye === 1"
-                    v-model="pwd"
-                    placeholder="请输入6-16位登录密码"
+                    name="密码"
+                    label="密码"
+                    placeholder="请输入密码"
+                    :rules="[{ required: true, message: '请填写密码' }]"
                 />
-                <input
-                    type="text"
-                    class="width-100"
-                    v-if="isEye === 2"
-                    v-model="pwd"
-                    placeholder="请输入6-16位登录密码"
-                />
-            </div>
-            <div class="fx align-items">
-                <img
-                    src="../../assets/image/input-close.png"
-                    @click="clear"
-                    width="25px"
-                />
-                <img
-                    class="ml-20"
-                    v-if="isEye === 1"
-                    src="../../assets/image/pwd-eye.png"
-                    @click="checkEye"
-                    width="20px"
-                />
-                <img
-                    class="ml-20"
-                    v-if="isEye === 2"
-                    src="../../assets/image/pwd-eye-active.png"
-                    @click="checkEye"
-                    width="20px"
-                />
-            </div>
-        </div>
-        <div
-            class="submit"
-            :class="
-                phone !== '' && smsCode !== '' && pwd !== '' ? 'active' : ''
-            "
-            @click="forgotPassword"
-        >
-            提交
+                <div style="margin: 16px">
+                    <van-button block type="primary" native-type="submit"
+                        >确定</van-button
+                    >
+                </div>
+            </van-form>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'index',
+    name: 'password',
     data() {
         return {
-            isEye: 1,
             phone: '',
             smsCode: '',
-            // 是否禁用按钮
-            codeDisabled: false,
-            // 倒计时秒数
-            countdown: 60,
-            // 按钮上的文字
+            password: '',
             codeMsg: '获取验证码',
-            pwd: '',
+            timer: null,
+            countdown: 60,
         };
     },
+    components: {},
+    watch: {},
+    mounted() {},
     methods: {
-        goBack() {
-            this.$router.go(-1);
-        },
-        clear() {
-            this.pwd = '';
-        },
-        toPage() {
-            this.$router.push({ name: 'login' });
-        },
-        checkEye() {
-            if (this.isEye === 1) {
-                this.isEye = 2;
-            } else {
-                this.isEye = 1;
-            }
-        },
-        // 发送验证码
-        sendSms() {
-            if (this.phone !== '') {
-                let param = {
-                    phone: this.phone,
-                };
-                this.$axios('post', '/user/sendSms', param).then((res) => {
-                    if (res.code === 200) {
-                        this.getCode();
+        // 获取验证码
+        getCode() {
+            // 验证码60秒倒计时
+            if (!this.timer) {
+                this.timer = setInterval(() => {
+                    if (this.countdown > 0 && this.countdown <= 60) {
+                        this.countdown--;
+                        if (this.countdown !== 0) {
+                            this.codeMsg = this.countdown + 'S';
+                        } else {
+                            clearInterval(this.timer);
+                            this.codeMsg = '获取验证码';
+                            this.countdown = 60;
+                            this.timer = null;
+                        }
                     }
-                });
-            } else {
-                this.$toast({
-                    message: '请输入手机号',
-                });
+                }, 1000);
             }
+        },
+        sendSms() {
+            if (!this.phone) {
+                this.$toast({ message: '请输入手机号' });
+                return;
+            }
+            let param = {
+                phone: this.phone,
+            };
+
+            this.$axios('post', '/user/sendSms', param).then((res) => {
+                if (res.code === 200) {
+                    this.getCode();
+                } else {
+                    this.$toast({
+                        message: res.msg,
+                    });
+                }
+            });
         },
         // 修改密码
         forgotPassword() {
@@ -155,91 +112,40 @@ export default {
             };
             this.$axios('post', '/user/forgotPassword', param).then((res) => {
                 if (res.code === 200) {
-                    this.$router.push({ name: 'login' });
+                    this.$toast({
+                        message: '修改密码成功',
+                    });
+                    this.$router.push('/login');
                 }
             });
         },
-        // 获取验证码
-        getCode() {
-            // 验证码60秒倒计时
-            if (!this.timer) {
-                this.timer = setInterval(() => {
-                    if (this.countdown > 0 && this.countdown <= 60) {
-                        this.countdown--;
-                        if (this.countdown !== 0) {
-                            this.codeMsg = this.countdown + 'S';
-                            this.codeDisabled = true;
-                        } else {
-                            clearInterval(this.timer);
-                            this.codeMsg = '获取验证码';
-                            this.countdown = 60;
-                            this.timer = null;
-                            this.codeDisabled = false;
-                        }
-                    }
-                }, 1000);
-            }
-        },
+    },
+    destroyed() {
+        this.timer = null;
     },
 };
 </script>
 
-<style scoped>
-.login {
-    padding: 10px 25px;
-}
-.fs-30 {
-    font-size: 28px;
-    margin-top: 50px;
-    /*margin-left: 10px;*/
-}
-.user-agreement {
-    font-size: 12px;
-    color: #8f8f8f;
-    /*margin-left: 10px;*/
-}
-.c-ff {
-    color: #f8413d;
-}
-.active {
-    color: white !important;
-    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%) !important;
-}
-.input-mobile {
-    line-height: 50px;
-    border-bottom: 1px solid #ddd;
-    margin-top: 10px;
-}
-.triangle {
-    border: 5px solid transparent;
-    border-top-color: #f8413d;
-    transform: translateY(49%);
-    margin-left: 5px;
-    margin-right: 10px;
-}
-.submit {
+<style scoped lang="scss">
+.password-box {
     width: 100%;
-    line-height: 60px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    border-radius: 50px;
-    border: none;
-    font-size: 18px;
-    font-weight: 600;
-    text-align: center;
-    color: #bcc7d4;
-    background-color: #f2f4f7;
-}
-.btn-verify {
-    width: 74px;
-    font-size: 12px;
-    text-align: center;
-    padding-top: 5px;
-    background: #efefef;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.width-100 {
-    width: 100%;
+
+    .password-form {
+        width: 100%;
+        margin-top: 5px;
+        .sms-btn {
+            background: linear-gradient(
+                90deg,
+                #ff8d86 0%,
+                #f8413d 100%
+            ) !important;
+            padding: 0 10px;
+            height: 36px;
+            border-radius: 2px;
+            @include flexCenter();
+            font-size: 12px;
+            color: #fff;
+        }
+    }
 }
 </style>

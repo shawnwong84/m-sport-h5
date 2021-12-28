@@ -6,3 +6,12 @@ body,
     height: 100%;
     background: #f7f7f7;
 }
+
+.van-nav-bar .van-icon {
+    color: #333 !important;
+}
+
+.van-button--primary {
+    background: linear-gradient(90deg, #ff8d86 0%, #f8413d 100%) !important;
+    border: none !important;
+}

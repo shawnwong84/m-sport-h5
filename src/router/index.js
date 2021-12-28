@@ -189,7 +189,7 @@ const router = new Router({
             component: () => import('@/pages/message/index.vue'),
             meta: {
                 footShow: true,
-                requiresAuth: false,
+                requiresAuth: true,
             },
         },
         {
@@ -207,7 +207,7 @@ const router = new Router({
             component: () => import('@/pages/account/index.vue'),
             meta: {
                 footShow: true,
-                requiresAuth: false,
+                requiresAuth: true,
             },
         },
         {
@@ -223,6 +223,15 @@ const router = new Router({
             path: '/featuredExperts',
             name: 'featuredExperts',
             component: () => import('@/pages/featuredExperts/index.vue'),
+            meta: {
+                footShow: true,
+                requiresAuth: false,
+            },
+        },
+        {
+            path: '/setting',
+            name: 'setting',
+            component: () => import('@/pages/setting/index.vue'),
             meta: {
                 footShow: true,
                 requiresAuth: false,

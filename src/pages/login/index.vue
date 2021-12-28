@@ -26,7 +26,7 @@
                     type="password"
                     name="password"
                     label="密码"
-                    placeholder="密码"
+                    placeholder="请输入密码"
                     :rules="[{ required: true, message: '请输入密码' }]"
                 />
                 <div class="sub-btn">
@@ -36,11 +36,19 @@
                 </div>
             </van-form>
         </div>
-        <div class="user-register" @click="toPage('/register')">快速注册</div>
+        <div class="login-bottom">
+            <div class="user-password" @click="toPage('/password?type=1')">
+                忘记密码
+            </div>
+            <div class="user-register" @click="toPage('/register')">
+                快速注册
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Cookie from '../../api/cookie.js';
 export default {
     name: 'login',
@@ -54,6 +62,9 @@ export default {
     watch: {},
     mounted() {},
     methods: {
+        ...mapActions({
+            setUserInfo: 'setUserInfo',
+        }),
         onSubmit(values) {
             console.log('submit', values);
             this.$axios('post', '/user/loginByPc', values).then((res) => {
@@ -62,7 +73,10 @@ export default {
                     this.$toast({
                         message: '登录成功',
                     });
-                    this.toPage('/');
+                    this.getInfo();
+                    setTimeout(() => {
+                        this.toPage('/');
+                    }, 1000);
                 } else {
                     this.$toast({
                         message: res.msg,
@@ -72,6 +86,13 @@ export default {
         },
         toPage(path) {
             this.$router.push(path);
+        },
+        getInfo() {
+            this.$axios('post', '/user/userInfo').then((res) => {
+                if (res.code === 200) {
+                    this.setUserInfo(res.data);
+                }
+            });
         },
     },
 };
@@ -109,14 +130,7 @@ export default {
             background: none;
             padding: 12px 0;
         }
-        ::v-deep .van-button--primary {
-            background: linear-gradient(
-                90deg,
-                #ff8d86 0%,
-                #f8413d 100%
-            ) !important;
-            border: none;
-        }
+
         .sub-btn {
             margin-top: 50px;
         }
@@ -133,9 +147,9 @@ export default {
             display: inline-block;
         }
     }
-    .user-register {
+    .login-bottom {
         width: 100%;
-        @include flexEndCenter();
+        @include flexBetweenCenter();
         margin-top: 40px;
         color: $primary-color;
         font-size: 14px;

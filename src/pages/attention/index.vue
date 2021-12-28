@@ -21,7 +21,11 @@
                     </span>
                     <span class="room-title">{{ item.roomName }}</span>
                 </div>
-                <div class="live-btn" @click="toPage(item.roomId)">
+                <div
+                    class="live-btn"
+                    @click="toPage(item.roomId)"
+                    :class="{ over: item.liveStatus !== 1 }"
+                >
                     {{ item.liveStatus === 1 ? '直播中' : '已结束' }}
                 </div>
             </div>
@@ -42,7 +46,7 @@
 
 <script>
 import matchItem from '../../components/matchItem';
-import noData from '../../components/noData'
+import noData from '../../components/noData';
 export default {
     name: 'attention',
     data() {
@@ -53,7 +57,7 @@ export default {
     },
     components: {
         matchItem,
-        noData
+        noData,
     },
     watch: {},
     mounted() {
@@ -137,6 +141,10 @@ export default {
                 font-size: 14px;
                 color: #92600d;
                 margin-left: 10px;
+                &.over {
+                    background: #9e9e9e;
+                    color: #fff;
+                }
             }
         }
     }

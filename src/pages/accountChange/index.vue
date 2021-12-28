@@ -1,219 +1,69 @@
 <template>
-    <div>
-        <v-down></v-down>
-        <div class="back" @click="$utils.goBack">
-            <img src="../../assets/image/back.png" width="20px" />
-        </div>
-        <div class="fx align-items justify-center mt-10">
-            <div class="fs-20 fw-700">{{ title }}</div>
-        </div>
-        <div class="phone-box" v-if="num === 1">
-            <div class="c-9D">为了账户安全，我们需要验证身份</div>
-            <div class="mt-5 fs-20 fw-700">+86 {{ phone }}</div>
-            <div class="mt-20 fx justify-between nav-info">
-                <div class="">
-                    <input
-                        type="text"
-                        v-model="code"
-                        placeholder="请输入验证码"
-                    />
-                </div>
-                <div>
-                    <input
-                        type="button"
-                        class="getNumber"
-                        v-model="codeMsg"
-                        @click="sendSms"
-                        :disabled="codeDisabled"
-                    />
-                </div>
-            </div>
-            <div class="mt-20 fw-700 nav-info" v-if="isShowPwd">
-                <input
-                    type="text"
-                    class="ml-10"
-                    v-model="pwd"
-                    placeholder="请输入新密码"
+    <div class="account-change-box">
+        <van-nav-bar
+            title="修改绑定手机"
+            left-arrow
+            @click-left="$router.back()"
+        />
+        <div class="accpunt-change-form">
+            <van-form @submit="onSubmit">
+                <van-field
+                    v-model="getUserInfo.phone"
+                    name="phone"
+                    label="+86"
+                    disabled
                 />
-            </div>
-            <div class="red">{{ erro }}</div>
-            <div
-                class="next-btn"
-                v-if="pageType === 2 && !isShowPwd"
-                :class="code !== '' ? 'active' : ''"
-                @click="next"
-            >
-                下一步
-            </div>
-            <div
-                class="next-btn"
-                v-if="pageType === 1"
-                :class="code !== '' ? 'active' : ''"
-                @click="updatePhoneSt"
-            >
-                下一步
-            </div>
-            <div
-                class="next-btn"
-                v-if="pageType === 2 && isShowPwd"
-                :class="code !== '' && pwd !== '' ? 'active' : ''"
-                @click="forgotPassword"
-            >
-                提交
-            </div>
-        </div>
-        <div class="phone-box" v-if="num === 2 && pageType === 1">
-            <div class="mt-5 fw-700 nav-info">
-                +86<input
-                    type="text"
-                    class="ml-10"
-                    v-model="phone"
-                    placeholder="请输入手机号"
-                />
-            </div>
-            <div class="mt-20 fx justify-between nav-info">
-                <div class="">
-                    <input
-                        type="text"
-                        v-model="code"
-                        placeholder="请输入验证码"
-                    />
+                <van-field
+                    v-model="smsCode"
+                    center
+                    clearable
+                    label="验证码"
+                    placeholder="请输入验证码"
+                    name="smsCode"
+                    :rules="[{ required: true, message: '请输入验证码' }]"
+                    maxlength="8"
+                >
+                    <template #button>
+                        <div class="sms-btn" @click="sendSms">
+                            {{ codeMsg }}
+                        </div>
+                    </template>
+                </van-field>
+                <div class="sub-btn">
+                    <van-button block type="primary" native-type="submit"
+                        >确定</van-button
+                    >
                 </div>
-                <div>
-                    <input
-                        type="button"
-                        class="getNumber"
-                        v-model="codeMsg"
-                        @click="sendSms"
-                        :disabled="codeDisabled"
-                    />
-                </div>
-            </div>
-            <div class="red">{{ erro }}</div>
-            <div
-                class="next-btn"
-                :class="code !== '' ? 'active' : ''"
-                @click="updatePhoneNd"
-            >
-                提交
-            </div>
+            </van-form>
         </div>
     </div>
 </template>
 
 <script>
-import down from '../../components/down/index';
-import Cookie from '../../api/cookie.js';
+import { mapGetters } from 'vuex';
 export default {
-    name: 'index',
+    name: 'accountChange',
     data() {
         return {
-            phone: this.$route.query.phone,
-            pageType: this.$route.query.pageType,
-            title: '',
-            pwd: '',
-            erro: '',
-            isShowPwd: false,
-            num: 1,
-            code: '',
-            // 是否禁用按钮
-            codeDisabled: false,
             // 倒计时秒数
             countdown: 60,
             // 按钮上的文字
             codeMsg: '获取验证码',
+            // 定时器
+            timer: null,
+
+            smsCode: '',
         };
     },
-    components: { 'v-down': down },
-    mounted() {
-        if (this.pageType === 1) {
-            this.title = '改绑手机';
-        } else {
-            this.title = '修改密码';
-        }
+    components: {},
+    computed: {
+        ...mapGetters({
+            getUserInfo: 'getUserInfo',
+        }),
     },
+    watch: {},
+    mounted() {},
     methods: {
-        // 修改密码
-        forgotPassword() {
-            let param = {
-                password: this.pwd,
-                phone: this.phone,
-                smsCode: this.code,
-            };
-            this.$axios('post', '/user/forgotPassword', param).then((res) => {
-                if (res.code === 200) {
-                    this.$toast({
-                        message: '修改密码成功，请重新登录！',
-                    });
-                    Cookie.remove('token');
-                    this.$router.push({ name: 'login' });
-                }
-            });
-        },
-        next() {
-            this.isShowPwd = true;
-        },
-        // 验证手机
-        updatePhoneSt() {
-            if (this.code === '') {
-                this.erro = '请输入验证码';
-            } else {
-                let param = {
-                    smsCode: this.code,
-                };
-                this.$axios('post', '/user/updatePhoneSt', param).then(
-                    (res) => {
-                        if (res.code === 200) {
-                            this.erro = '';
-                            this.num = 2;
-                            this.code = '';
-                            this.phone = '';
-                            clearInterval(this.timer);
-                            this.codeMsg = '获取验证码';
-                            this.countdown = 60;
-                            this.timer = null;
-                            this.codeDisabled = false;
-                        }
-                    },
-                );
-            }
-        },
-        // 绑定手机
-        updatePhoneNd() {
-            if (this.phone === '') {
-                this.erro = '请输入手机号';
-            } else if (this.code === '') {
-                this.erro = '请输入验证码';
-            } else {
-                let param = {
-                    phone: this.phone,
-                    smsCode: this.code,
-                };
-                this.$axios('post', '/user/updatePhoneByApp', param).then(
-                    (res) => {
-                        if (res.code === 200) {
-                            this.erro = '';
-                            this.$toast({
-                                message: '修改手机号成功，请重新登录！',
-                            });
-                            Cookie.remove('token');
-                            this.$router.push({ name: 'login' });
-                        }
-                    },
-                );
-            }
-        },
-        // 发送验证码
-        sendSms() {
-            let param = {
-                phone: this.phone,
-            };
-            this.$axios('post', '/user/sendSms', param).then((res) => {
-                if (res.code === 200) {
-                    this.getCode();
-                }
-            });
-        },
         // 获取验证码
         getCode() {
             // 验证码60秒倒计时
@@ -223,49 +73,80 @@ export default {
                         this.countdown--;
                         if (this.countdown !== 0) {
                             this.codeMsg = this.countdown + 'S';
-                            this.codeDisabled = true;
                         } else {
                             clearInterval(this.timer);
                             this.codeMsg = '获取验证码';
                             this.countdown = 60;
                             this.timer = null;
-                            this.codeDisabled = false;
                         }
                     }
                 }, 1000);
             }
         },
+        sendSms() {
+            let param = {
+                phone: this.getUserInfo.phone,
+            };
+
+            this.$axios('post', '/user/sendSms', param).then((res) => {
+                if (res.code === 200) {
+                    this.getCode();
+                } else {
+                    this.$toast({
+                        message: res.msg,
+                    });
+                }
+            });
+        },
+
+        onSubmit(values) {
+            console.log('submit', values);
+            let param = {
+                phone: this.getUserInfo.phone,
+                smsCode: this.smsCode,
+            };
+            this.$axios('post', '/user/updatePhoneByApp', param).then((res) => {
+                if (res.code === 200) {
+                    this.$toast({
+                        message: '修改手机号成功，请重新登录！',
+                    });
+                    Cookie.remove('token');
+                    this.$router.push('/login');
+                } else {
+                    this.$toast({
+                        message: res.msg,
+                    });
+                }
+            });
+        },
     },
 };
 </script>
 
-<style scoped>
-.back {
-    position: absolute;
-    top: 75px;
-    left: 15px;
-}
-.red {
-    color: red;
-}
-.nav-info {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-.phone-box {
-    padding: 20px;
-}
-.next-btn {
+<style scoped lang="scss">
+.account-change-box {
     width: 100%;
-    line-height: 60px;
-    border-radius: 50px;
-    color: #bcc7d4;
-    text-align: center;
-    margin-top: 50px;
-    background: rgb(242, 244, 247);
-}
-.active {
-    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
-    color: white;
+    .accpunt-change-form {
+        width: 100%;
+        background: #fff;
+        padding: 16px;
+        .sub-btn {
+            margin: 50px 0 20px;
+            padding: 0 10px;
+        }
+        .sms-btn {
+            background: linear-gradient(
+                90deg,
+                #ff8d86 0%,
+                #f8413d 100%
+            ) !important;
+            padding: 0 10px;
+            height: 36px;
+            border-radius: 2px;
+            @include flexCenter();
+            font-size: 12px;
+            color: #fff;
+        }
+    }
 }
 </style>

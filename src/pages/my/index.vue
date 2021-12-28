@@ -76,7 +76,7 @@ export default {
                 {
                     id: 2,
                     name: '设置',
-                    path: '',
+                    path: '/setting',
                     icon: require('../../assets/image/my/setting-icon.png'),
                 },
             ],

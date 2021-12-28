@@ -23,6 +23,7 @@ import {
     Uploader,
     Picker,
     DatetimePicker,
+    Cell,
 } from 'vant';
 import 'vant/lib/index.css';
 Vue.use(Toast)
@@ -34,7 +35,8 @@ Vue.use(Toast)
     .use(NavBar)
     .use(Uploader)
     .use(Picker)
-    .use(DatetimePicker);
+    .use(DatetimePicker)
+    .use(Cell);
 
 import VueLazyload from 'vue-lazyload';
 

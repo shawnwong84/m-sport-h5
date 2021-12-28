@@ -1,11 +1,7 @@
 <template>
     <div>
-        <v-down></v-down>
+        <van-nav-bar title="意见反馈" left-arrow @click-left="$router.back()" />
         <div class="fx align-items justify-between mt-15 ml-10 mr-10">
-            <div @click="$utils.goBack">
-                <img src="../../assets/image/back.png" width="20px" />
-            </div>
-            <div class="fs-20 fw-700">我的反馈</div>
             <div>
                 <div
                     class="fx align-items"
@@ -24,30 +20,25 @@
         </div>
         <div class="feedback">
             <div v-if="!isFeedback">
-                <div
-                    v-if="userFeedbackList.length !== 0"
-                    class="fx align-items feedback-list"
-                    v-for="(item, index) in userFeedbackList"
-                >
-                    <div>
-                        <img
-                            src="../../assets/image/feedback-msg.png"
-                            width="44px"
-                        />
-                    </div>
-                    <div class="ml-10 border-bottom">
-                        {{ item.contactDetails }}
+                <div v-if="userFeedbackList.length !== 0">
+                    <div
+                        class="fx align-items feedback-list"
+                        v-for="(item, index) in userFeedbackList"
+                        :key="index"
+                    >
+                        <div>
+                            <img
+                                src="../../assets/image/feedback-msg.png"
+                                width="44px"
+                            />
+                        </div>
+                        <div class="ml-10 border-bottom">
+                            {{ item.contactDetails }}
+                        </div>
                     </div>
                 </div>
-                <div class="no-data" v-if="userFeedbackList.length === 0">
-                    <div>
-                        <img
-                            src="../../assets/image/nothing.png"
-                            width="240px"
-                        />
-                    </div>
-                    <div class="c-9D">暂无数据</div>
-                </div>
+
+                <noData v-else></noData>
             </div>
             <div v-if="isFeedback">
                 <div class="feedback-list">
@@ -123,7 +114,7 @@
 </template>
 
 <script>
-import down from '../../components/down/index';
+import noData from '../../components/noData';
 import { Cookie } from '../../api/cookie.js';
 export default {
     name: 'index',
@@ -142,7 +133,7 @@ export default {
             },
         };
     },
-    components: { 'v-down': down },
+    components: { noData },
     mounted() {
         this.getUserFeedbackList();
     },
@@ -203,6 +194,9 @@ export default {
 </script>
 
 <style scoped>
+::v-deep .van-icon {
+    color: #333;
+}
 .no-data {
     margin-top: 30%;
     text-align: center;
