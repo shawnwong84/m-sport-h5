@@ -1,27 +1,19 @@
 <template>
-    <div>
+    <div class="message-box">
         <van-nav-bar title="消息中心" left-arrow @click-left="$router.back()" />
-        <div class="feedback">
-            <div v-if="userFeedbackList.length !== 0">
-                <div
-                    class="fx align-items feedback-list"
-                    v-for="(item, index) in userFeedbackList"
-                    :key="index"
-                >
-                    <div>
-                        <img
-                            src="../../assets/image/feedback-msg.png"
-                            width="44px"
-                        />
-                    </div>
-                    <div class="ml-10 border-bottom">
-                        {{ item.contactDetails }}
-                    </div>
-                </div>
-            </div>
 
-            <noData v-else></noData>
+        <div class="message-list" v-if="messageList.length">
+            <div
+                class="message-list-item"
+                v-for="item in messageList"
+                :key="item.id"
+            >
+                <img src="../../assets/image/my/message-icon.png" alt="" />
+                <p>{{ item.contactDetails }}</p>
+            </div>
         </div>
+
+        <noData v-else></noData>
     </div>
 </template>
 
@@ -31,7 +23,7 @@ export default {
     name: 'index',
     data() {
         return {
-            userFeedbackList: [],
+            messageList: [],
         };
     },
     components: { noData },
@@ -47,7 +39,7 @@ export default {
             };
             this.$axios('post', '/user/getUserMsgList', param).then((res) => {
                 if (res.code === 200) {
-                    this.userFeedbackList = res.data.dataList;
+                    this.messageList = res.data.dataList;
                 }
             });
         },
@@ -56,84 +48,33 @@ export default {
 </script>
 
 <style scoped lang="scss">
-::v-deep .van-icon {
-    color: #333;
-}
-.no-data {
-    margin-top: 30%;
-    text-align: center;
-}
-.back {
-    position: absolute;
-    top: 64px;
-    left: 15px;
-}
-.c-bule {
-    color: rgb(22, 153, 197);
-}
-.feedback-list {
-    padding: 15px;
-}
-.border-bottom {
+.message-box {
     width: 100%;
-    border-bottom: 1px solid #eaeaea;
-    padding-bottom: 15px;
-}
-.active {
-    background: linear-gradient(132deg, #ff8d86 0%, #f8413d 100%);
-    color: #fff;
-    border: 1px solid #f8413d !important;
-}
-.gary-border {
-    height: 10px;
-    background: rgb(244, 244, 244);
-}
-.btn {
-    width: 88px;
-    line-height: 40px;
-    text-align: center;
-    border-radius: 30px;
-    border: 1px solid #ddd;
-    margin-right: 10px;
-}
-textarea {
-    width: 100%;
-    height: 200px;
-    border: none;
-    outline: none;
-}
-.submit {
-    width: 100%;
-    line-height: 50px;
-    text-align: center;
-    border-radius: 30px;
-    background: #f2f4f7;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-.feedback {
-    width: 100%;
-    position: absolute;
-    top: 110px;
-    left: 0;
-    bottom: 0;
-    overflow-y: scroll;
-}
-.ta-right {
-    text-align: right;
-    font-size: 16px;
-    color: #ddd;
-}
-.file {
-    width: 100px;
-    height: 100px;
-    background-image: url('../../assets/image/upload.png');
-    background-size: 100% 100%;
-    margin-top: 10px;
-}
-.file input {
-    opacity: 0;
-    width: 100px;
-    height: 100px;
+
+    .message-list {
+        width: 100%;
+        background-color: #fff;
+        padding: 0 16px;
+        &-item {
+            width: 100%;
+            @include flexStartCenter();
+            padding: 10px 0;
+            &:not(:last-child) {
+                border-bottom: 1px solid #f1f1f1;
+            }
+            img {
+                width: 34px;
+                height: 34px;
+                margin-right: 5px;
+            }
+            p {
+                flex: 1;
+                font-size: 14px;
+                color: #282828;
+                word-wrap: break-word;
+                word-break: break-all;
+            }
+        }
+    }
 }
 </style>

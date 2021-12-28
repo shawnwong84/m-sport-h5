@@ -184,6 +184,15 @@ const router = new Router({
             },
         },
         {
+            path: '/feedbackForm',
+            name: 'feedbackForm',
+            component: () => import('@/pages/feedbackForm/index.vue'),
+            meta: {
+                footShow: true,
+                requiresAuth: false,
+            },
+        },
+        {
             path: '/message',
             name: 'message',
             component: () => import('@/pages/message/index.vue'),
