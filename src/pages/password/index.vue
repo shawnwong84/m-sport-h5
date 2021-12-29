@@ -116,6 +116,10 @@ export default {
                         message: '修改密码成功',
                     });
                     this.$router.push('/login');
+                } else {
+                    this.$toast({
+                        message: res.msg,
+                    });
                 }
             });
         },

@@ -18,3 +18,8 @@ body,
 .van-picker__confirm{
     color: $primary-color !important;
 }
+
+.van-radio__icon--checked .van-icon{
+    background-color:$primary-color !important ;
+    border-color: $primary-color !important;
+}

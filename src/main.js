@@ -24,6 +24,8 @@ import {
     Picker,
     DatetimePicker,
     Cell,
+    RadioGroup,
+    Radio,
 } from 'vant';
 import 'vant/lib/index.css';
 Vue.use(Toast)
@@ -36,7 +38,9 @@ Vue.use(Toast)
     .use(Uploader)
     .use(Picker)
     .use(DatetimePicker)
-    .use(Cell);
+    .use(Cell)
+    .use(RadioGroup)
+    .use(Radio);
 
 import VueLazyload from 'vue-lazyload';
 

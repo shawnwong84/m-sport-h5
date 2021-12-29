@@ -10,7 +10,8 @@
             <div
                 class="attention-item"
                 v-for="item in userAnchorList"
-                :key="item.id"
+                :key="item.roomId"
+                @click="toPage(item.roomId)"
             >
                 <div class="anchor-avatar">
                     <img :src="item.anchorAvatar" alt="" />
@@ -85,7 +86,7 @@ export default {
             });
         },
         toPage(id) {
-            this.$router.push({ name: 'room', query: { id: id } });
+            this.$router.push({ path: '/room', query: { id: id } });
         },
     },
 };
