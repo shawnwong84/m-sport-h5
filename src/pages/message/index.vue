@@ -9,7 +9,7 @@
                 :key="item.id"
             >
                 <img src="../../assets/image/my/message-icon.png" alt="" />
-                <p>{{ item.contactDetails }}</p>
+                <p>{{ item.msgContent }}</p>
             </div>
         </div>
 

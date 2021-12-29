@@ -208,7 +208,7 @@
                             style="vertical-align: center"
                         />
                         <span class="fw-700 c-0">系统消息：</span
-                        >欢迎进入本直播间，请友善发言。本平台明确禁止讨论任何违法、违规、低俗、涉赌内容，一经发现作封禁帐号和直播间处理。防丢失请下载xxapp。
+                        >欢迎进入本直播间，请友善发言。本平台明确禁止讨论任何违法、违规、低俗、涉赌内容，一经发现作封禁帐号和直播间处理。防丢失请下载M直播app。
                     </div>
                     <div ref="content">
                         <div v-for="(item, index) in chatContent">
