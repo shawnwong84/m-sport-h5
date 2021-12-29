@@ -8,7 +8,7 @@
                 </div>
             </template>
         </van-nav-bar>
-        <div class="feedback-list">
+        <div class="feedback-list" v-if="userFeedbackList.length > 0">
             <div
                 class="feedback-list-item"
                 v-for="item in userFeedbackList"
@@ -18,10 +18,12 @@
                 <p>{{ item.contactDetails }}</p>
             </div>
         </div>
+        <noData v-else></noData>
     </div>
 </template>
 
 <script>
+import noData from '../../components/noData';
 export default {
     name: 'index',
     data() {
@@ -29,7 +31,9 @@ export default {
             userFeedbackList: [],
         };
     },
-    components: {},
+    components: {
+        noData,
+    },
     watch: {},
     mounted() {
         this.getUserFeedbackList();
