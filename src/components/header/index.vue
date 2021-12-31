@@ -42,7 +42,7 @@ export default {
                 },
                 {
                     id: 2,
-                    name: '咨询',
+                    name: '资讯',
                     path: '/news',
                     icon: require('../../assets/image/header/news-icon.png'),
                     activeIcon: require('../../assets/image/header/live-active-icon.png'),

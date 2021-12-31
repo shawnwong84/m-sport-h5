@@ -1,9 +1,9 @@
 const config = {
-    socketServer: 'im-api-v2-31.easemob.com', // xmpp Server地址，对于在console.easemob.com创建的appKey，固定为该值
+    socketServer: 'im-api-v2.easemob.com',    // socket Server地址
 
-    apiURL: 'http://a31.easemob.com', // rest Server地址，对于在console.easemob.com创建的appkey，固定为该值
+    restServer: 'a1.easemob.com',               // rest Server地址
 
-    appkey: '1118210302098649#hongshanliving', // App key
+    appkey: '1102211214116810#room', // App key
 
     https: false, // 是否使用https
 
