@@ -867,7 +867,7 @@ export default {
         },
         // 播放器
         playerVideo(img, url) {
-            // eslint-disable-next-line no-unused-vars,no-undef
+           
             this.player = new Aliplayer(
                 {
                     id: 'player-con',
@@ -887,17 +887,7 @@ export default {
                     console.log('The player is created');
                 },
             );
-            this.player.play();
-            //   = new TcPlayer('id_test_video', {
-            //   'm3u8': url,
-            //   'mp4': url,
-            //   'flv': url, // 增加了一个 flv 的播放地址，用于PC平台的播放 请替换成实际可用的播放地址
-            //   'autoplay': true,      // iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
-            //   'poster': {'style': 'cover', 'src': img},
-            //   'controls': false,
-            //   'width': '100%', // 视频的显示宽度，请尽量使用视频分辨率宽度
-            //   'height': '270'// 视频的显示高度，请尽量使用视频分辨率高度
-            // })
+      
         },
         // 精彩推荐
         getRecommend() {
