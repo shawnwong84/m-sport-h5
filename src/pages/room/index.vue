@@ -184,7 +184,7 @@
                     class="mt-10"
                     @click="openqqGroup(roomInfoList.qqGroupNum)"
                 >
-                    <img src="../../assets/image/wx-num.png" width="50px" />
+                    <img src="../../assets/image/qq2-num.png" width="50px" />
                 </div>
             </div>
             <div v-if="num === 1">
