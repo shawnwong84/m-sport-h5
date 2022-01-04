@@ -167,20 +167,20 @@
             </div>
             <div class="copy-div">
                 <div
-                    v-if="roomInfoList.qqNum"
+                    v-if="roomInfoList.qqNum && roomInfoList.qqNum.trim()"
                     @click="openQQ(roomInfoList.qqNum)"
                 >
                     <img src="../../assets/image/qq-num.png" width="50px" />
                 </div>
                 <div
-                    v-if="roomInfoList.wxNum"
+                    v-if="roomInfoList.wxNum && roomInfoList.wxNum.trim()"
                     class="mt-10"
                     @click="openWx(roomInfoList.wxNum)"
                 >
                     <img src="../../assets/image/wx-num.png" width="50px" />
                 </div>
                 <div
-                    v-if="roomInfoList.qqGroupNum"
+                    v-if="roomInfoList.qqGroupNum && roomInfoList.qqGroupNum.trim()"
                     class="mt-10"
                     @click="openqqGroup(roomInfoList.qqGroupNum)"
                 >
