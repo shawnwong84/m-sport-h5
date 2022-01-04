@@ -1139,7 +1139,7 @@ export default {
 .copy-div {
     position: fixed;
     right: 10px;
-    top: 350px;
+    top: 420px;
     z-index: 9;
 }
 .tab-foot {
